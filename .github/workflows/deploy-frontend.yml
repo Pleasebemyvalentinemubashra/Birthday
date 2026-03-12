@@ -22,6 +22,8 @@ jobs:
         run: cd frontend && npm install
       
       - name: Build
+        env:
+          VITE_API_URL: https://birthday-scrapbook-api.onrender.com
         run: cd frontend && npm run build
       
       - name: Deploy to GitHub Pages
