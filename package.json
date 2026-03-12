@@ -9,7 +9,7 @@
     "dev:frontend": "cd frontend && npm run dev",
     "build": "cd frontend && npm install && npm run build",
     "install:all": "npm install && cd frontend && npm install",
-    "render-build": "cd frontend && npm install && npm run build"
+    "render-build": "npm install && cd frontend && npm install && npx vite build"
   },
   "dependencies": {
     "better-sqlite3": "^9.4.3",
