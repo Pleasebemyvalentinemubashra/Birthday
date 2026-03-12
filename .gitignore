@@ -1,0 +1,10 @@
+node_modules/
+frontend/node_modules/
+.env
+uploads/
+memories.db
+memories.db-wal
+memories.db-shm
+frontend/dist/
+*.log
+.DS_Store

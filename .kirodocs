@@ -1,0 +1,48 @@
+# Birthday Scrapbook — Kiro Project Docs
+
+## What this project is
+A romantic birthday scrapbook website with:
+- A scroll-driven candle animation where SVG "1" and "9" digit-shaped candles travel down the page, merge into "19", and land on a birthday cake
+- A real book flip animation (individual page turns, not whole-book transitions)
+- A persistent memory wall where visitors upload photos and messages (stored in SQLite + /uploads/)
+- A typewriter love letter section
+- Fully personalised via .env (no code changes needed for names/age)
+
+## File map
+- `server.js` — Express backend. Three routes: GET /api/config, GET+POST /api/memories, DELETE /api/memories/:id. Uses better-sqlite3 and multer.
+- `public/index.html` — Entire frontend in one file. Sections: Hero → Album → Memory Wall → Letter → Cake → Final.
+- `.env` — Personalisation. RECIPIENT, AGE, SENDER, ADMIN_KEY, PORT, ACCENT_COLOR, LETTER_TEXT.
+- `memories.db` — SQLite database (auto-created on first run).
+- `uploads/` — Photo storage directory (auto-created).
+
+## CSS architecture
+All design tokens live in `:root{}` at the top of public/index.html.
+Key variables: --rose, --rose2, --rose3, --cream, --cream2, --gold, --paper, --paper2, --text, --textl.
+Font families: --font-script (Pinyon Script), --font-hand (Caveat), --font-serif (Cormorant Garamond).
+
+## JavaScript sections (in order)
+1. CURSOR — laggy blob follower
+2. PARTICLES + HEARTS — ambient floating symbols
+3. SCROLL REVEAL — IntersectionObserver for .reveal elements
+4. BOOK PAGE CONTENT — buildPages(name, age) returns array of {left, right} HTML strings
+5. BOOK FLIP ENGINE — goPage(to, dir) rotates #bFlip around its left edge using rotateY
+6. MEMORY WALL — fetch('/api/memories'), FormData upload, drag-and-drop photo preview
+7. TYPEWRITER LETTER — character-by-character with punctuation pauses
+8. TRAVELING CANDLES — state machine (TRAVEL→MERGING→MERGED→LANDING→LANDED), scroll-driven via RAF
+9. FINAL REVEAL — IntersectionObserver
+10. INIT — fetches /api/config, personalises DOM, boots subsystems
+
+## Candle SVG shapes
+- Candle "1": serif numeral shape with flag stroke, vertical shaft, and bottom platform (SVG path + rects)
+- Candle "9": donut ring (even-odd fill-rule circle path) + descending tail rect
+- Both use linearGradient fills (g1=rose/pink, g9=gold/amber)
+- Flames are SVG paths animated with CSS keyframes
+- The cake-landing "19" is a duplicate rendered inside #ck19 (position:absolute above the cake)
+
+## How to add a new album page
+In buildPages(), add a new object to the returned array:
+{ left: `<HTML for left page>`, right: `<HTML for right page>` }
+The book navigation dots auto-update.
+
+## How to deploy
+See README.md — Railway is the easiest option (GitHub → Railway → Add env vars → Generate domain).

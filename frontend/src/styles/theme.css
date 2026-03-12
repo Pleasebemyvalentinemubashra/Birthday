@@ -1,0 +1,57 @@
+@custom-variant dark (&:is(.dark *));
+:root {
+  --rose:     #e89ab3;
+  --rose2:    #b04e64;
+  --rose3:    #8b3349;
+  --blush:    #f7c6d9;
+  --cream:    #fdf5e9;
+  --cream2:   #f7ede0;
+  --paper:    #fefaf4;
+  --paper2:   #f5ead8;
+  --lavender: #d9c6f7;
+  --gold:     #c8a05a;
+  --ink:      #3d2a22;
+  --ink2:     #6a4050;
+  --font-handwritten: 'Dancing Script', cursive;
+  --font-serif:       'Playfair Display', Georgia, serif;
+  --font-body:        'EB Garamond', Georgia, serif;
+  /* shadcn tokens */
+  --font-size: 16px;
+  --background: #fdf5e9;
+  --foreground: #3d2a22;
+  --card: #fefaf4;
+  --card-foreground: #3d2a22;
+  --primary: #8b3349;
+  --primary-foreground: #fdf5e9;
+  --secondary: #f7c6d9;
+  --secondary-foreground: #3d2a22;
+  --muted: #f0e4d4;
+  --muted-foreground: #9a7060;
+  --accent: #d9c6f7;
+  --accent-foreground: #3d2a22;
+  --border: rgba(139,51,73,.15);
+  --input: transparent;
+  --input-background: #fefaf4;
+  --ring: #e89ab3;
+  --radius: 0.625rem;
+}
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html { font-size: var(--font-size); }
+  body { @apply bg-background text-foreground; font-family: var(--font-body); }
+}

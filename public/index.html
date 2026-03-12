@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Happy Birthday ♡</title>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS  — edit to repaint the site
+═══════════════════════════════════════════ */
+:root{
+  --rose:#d4687e; --rose2:#b04e64; --rose3:#8b3349;
+  --cream:#fdf8f2; --cream2:#f7ede0;
+  --gold:#c8a05a; --peach:#f7d4b0;
+  --text:#3d2a22; --textl:#7a5549;
+  --paper:#fefaf4; --paper2:#f5ead8;
+  --sh: rgba(80,40,30,.22);
+  --font-script:'Pinyon Script',cursive;
+  --font-hand:'Caveat',cursive;
+  --font-serif:'Cormorant Garamond',serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:var(--font-serif);color:var(--text);overflow-x:hidden;cursor:none}
+
+/* ── Cursor ─────────────────────────────── */
+#cur1{position:fixed;width:18px;height:18px;border-radius:50%;background:rgba(212,104,126,.3);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:multiply}
+#cur2{position:fixed;width:5px;height:5px;border-radius:50%;background:var(--rose);pointer-events:none;z-index:10000;transform:translate(-50%,-50%)}
+
+/* ── Particles ──────────────────────────── */
+#gpts{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.gpt{position:absolute;opacity:0;animation:gptf linear infinite;color:var(--rose);pointer-events:none;font-size:.6rem}
+@keyframes gptf{0%{opacity:0;transform:translateY(100vh)scale(.5)}8%{opacity:.5}85%{opacity:.2}100%{opacity:0;transform:translateY(-5vh)scale(1)rotate(360deg)}}
+
+/* ── Floating hearts ────────────────────── */
+.fh{position:absolute;opacity:0;animation:fhr linear infinite;pointer-events:none}
+@keyframes fhr{0%{opacity:0;transform:translateY(0)scale(.5)}15%{opacity:.7}80%{opacity:.3}100%{opacity:0;transform:translateY(-80vh)scale(1)rotate(25deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════════════════════════════════════════
+   TRAVELING CANDLES (fixed, scroll-driven)
+═══════════════════════════════════════════ */
+.c-wrap{position:fixed;pointer-events:none;z-index:500;display:flex;flex-direction:column;align-items:center;transition:opacity .5s}
+/* Glow aura */
+.c-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,50,.35) 0%,transparent 70%);opacity:0;transition:opacity .5s;animation:cglow 1s ease-in-out infinite alternate}
+@keyframes cglow{from{transform:translateX(-50%)scale(1)}to{transform:translateX(-50%)scale(1.3)}}
+.c-glow.lit{opacity:1}
+/* Shared flame animation */
+@keyframes flicker{from{transform:translateX(-50%)scaleX(1)scaleY(1)}to{transform:translateX(-50%)scaleX(.82)scaleY(1.12)rotate(3deg)}}
+.c-flame-outer,.c-flame-inner{position:absolute;left:50%;transform:translateX(-50%);border-radius:50% 50% 30% 30%;animation:flicker .32s ease-in-out infinite alternate}
+/* Candle 19 on cake */
+#ck19{position:absolute;top:-115px;left:50%;transform:translateX(-50%);display:none;flex-direction:column;align-items:center;z-index:10}
+
+/* ═══════════════════════════════════════════
+   SECTION 1 — HERO
+═══════════════════════════════════════════ */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 100% 70% at 50% 0%,#ffe0e8 0%,transparent 55%),
+             radial-gradient(ellipse 80% 60% at 0% 100%,#ffddd0 0%,transparent 50%),
+             radial-gradient(ellipse 70% 60% at 100% 80%,#fce8f5 0%,transparent 50%),var(--cream)}
+#hero::before{content:'';position:absolute;inset:0;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none}
+.hero-inner{position:relative;z-index:2;text-align:center;padding:2rem}
+.hero-eyebrow{font-family:var(--font-hand);font-size:1.1rem;color:var(--rose);letter-spacing:.18em;text-transform:uppercase;opacity:0;animation:fadeUp .9s .3s cubic-bezier(.22,1,.36,1) forwards;margin-bottom:.8rem}
+.hero-title{font-family:var(--font-script);font-size:clamp(4rem,11vw,8rem);color:var(--rose2);line-height:1;text-shadow:0 3px 30px rgba(180,80,100,.3);opacity:0;animation:fadeUp .9s .55s cubic-bezier(.22,1,.36,1) forwards;display:inline-block;position:relative}
+.hero-title::after{content:attr(data-text);position:absolute;inset:0;background:linear-gradient(120deg,transparent 20%,rgba(200,160,90,.45) 40%,transparent 60%);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 4s 2s ease-in-out infinite}
+@keyframes shimmer{0%,100%{background-position:200%}50%{background-position:-200%}}
+.hero-divider{width:80px;height:1.5px;background:linear-gradient(to right,transparent,var(--rose),transparent);margin:1.2rem auto;opacity:0;animation:fadeUp .7s .75s ease forwards}
+.hero-sub{font-style:italic;font-size:clamp(1.1rem,2.5vw,1.45rem);color:var(--textl);line-height:1.7;max-width:480px;margin:0 auto;opacity:0;animation:fadeUp .9s .9s cubic-bezier(.22,1,.36,1) forwards}
+.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);font-family:var(--font-hand);font-size:.9rem;color:var(--rose);opacity:0;animation:fadeUp .7s 1.5s ease forwards;display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--rose),transparent);animation:sp 1.5s ease-in-out infinite}
+@keyframes sp{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(.7);opacity:.4}}
+.hero-hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+
+/* ═══════════════════════════════════════════
+   SECTION 2 — ALBUM  (REAL BOOK FLIP)
+═══════════════════════════════════════════ */
+#album{min-height:100vh;padding:5rem 1.5rem 4rem;display:flex;flex-direction:column;align-items:center;
+  background:radial-gradient(ellipse 80% 50% at 80% 20%,#fde0e8 0%,transparent 55%),
+             radial-gradient(ellipse 60% 40% at 10% 70%,#fdeee0 0%,transparent 50%),var(--cream2)}
+.sec-lbl{font-family:var(--font-hand);font-size:1rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:.4rem;opacity:0;transform:translateY(18px)}
+.sec-ttl{font-family:var(--font-script);font-size:clamp(2.8rem,6vw,5rem);color:var(--rose2);text-align:center;margin-bottom:2rem;text-shadow:0 2px 20px rgba(180,80,100,.2);opacity:0;transform:translateY(18px)}
+.reveal{transition:opacity .8s,transform .8s}.reveal.visible{opacity:1!important;transform:none!important}
+
+/* Book outer */
+.book-outer{width:min(820px,94vw);position:relative;perspective:3000px;margin:0 auto}
+/* Physical cover behind pages */
+.book-cover-bg{position:absolute;inset:-7px -12px -7px -16px;background:linear-gradient(140deg,#7a3048 0%,#a05870 40%,#7a3048 100%);border-radius:8px 14px 14px 8px;box-shadow:-8px 0 22px rgba(0,0,0,.3),10px 10px 44px rgba(80,40,30,.3),inset 2px 0 0 rgba(255,255,255,.12);z-index:0}
+.book-cover-bg::before{content:'';position:absolute;inset:5px;border:1px solid rgba(200,160,90,.35);border-radius:4px 11px 11px 4px}
+.book-cover-bg::after{content:'Our Story ♡';position:absolute;left:3px;top:50%;transform:translateY(-50%) rotate(-90deg);font-family:var(--font-script);font-size:1.1rem;color:rgba(255,255,255,.5);white-space:nowrap;letter-spacing:.08em}
+/* Page stacking edges */
+.book-edge{position:absolute;bottom:-5px;left:2%;right:2%;height:5px;z-index:1;background:repeating-linear-gradient(to right,#ddc8b0 0,#ddc8b0 1.5px,#f0e0d0 1.5px,#f0e0d0 3px);border-radius:0 0 3px 3px}
+
+/* Book frame (open book area) */
+.book-frame{position:relative;height:500px;z-index:2;border-radius:4px 8px 8px 4px;overflow:visible}
+
+/* Left static page */
+#bL{position:absolute;left:0;top:0;width:calc(50% - 14px);height:100%;background:var(--paper);border-radius:6px 0 0 6px;overflow:hidden;padding:1.8rem 1.6rem;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,rgba(200,170,140,.11) 27px,rgba(200,170,140,.11) 28px);
+  box-shadow:inset -4px 0 8px rgba(0,0,0,.05)}
+/* Spine */
+.book-spine{position:absolute;left:calc(50% - 14px);top:0;width:28px;height:100%;z-index:30;background:linear-gradient(to right,#7a3048 0%,#a05870 30%,#c08090 50%,#a05870 70%,#7a3048 100%);box-shadow:2px 0 10px rgba(0,0,0,.18),-2px 0 10px rgba(0,0,0,.12)}
+.book-spine::after{content:'';position:absolute;top:50%;left:0;right:0;height:2px;transform:translateY(-50%);background:linear-gradient(to right,transparent,rgba(200,160,90,.55),transparent)}
+/* Right background page */
+#bR{position:absolute;right:0;top:0;width:calc(50% - 14px);height:100%;background:var(--paper2);border-radius:0 6px 6px 0;overflow:hidden;padding:1.8rem 1.6rem}
+/* Page edge decorations */
+.pg-edge-r{position:absolute;right:-5px;top:8px;bottom:8px;width:5px;background:repeating-linear-gradient(to right,#dcc0a8 0,#dcc0a8 1px,#f0e0d0 1px,#f0e0d0 2.5px);border-radius:0 2px 2px 0;z-index:1}
+.pg-edge-l{position:absolute;left:-5px;top:8px;bottom:8px;width:5px;background:repeating-linear-gradient(to right,#f0e0d0 0,#f0e0d0 1.5px,#dcc0a8 1.5px,#dcc0a8 2.5px);border-radius:2px 0 0 2px;z-index:1}
+
+/* THE FLIPPER (single page, rotates around left edge) */
+#bFlip{position:absolute;left:calc(50% + 14px);top:0;width:calc(50% - 14px);height:100%;transform-origin:0 50%;transform-style:preserve-3d;z-index:20;transition:transform 0s}
+.b-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;padding:1.8rem 1.6rem;border-radius:0 6px 6px 0}
+#bFront{background:var(--paper2);box-shadow:inset 2px 0 5px rgba(0,0,0,.06)}
+#bBack{background:var(--paper);transform:rotateY(180deg);border-radius:6px 0 0 6px;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,rgba(200,170,140,.11) 27px,rgba(200,170,140,.11) 28px);box-shadow:inset -2px 0 5px rgba(0,0,0,.05)}
+/* Cursor drag hint on right corner */
+#bFront::after{content:'';position:absolute;top:0;right:0;bottom:0;width:20px;background:linear-gradient(to right,transparent,rgba(0,0,0,.03));pointer-events:none}
+/* Page-curl hint on hover */
+#bFlip::after{content:'';position:absolute;bottom:6px;right:6px;width:22px;height:22px;background:linear-gradient(225deg,rgba(0,0,0,.06) 0%,transparent 60%);pointer-events:none;opacity:0;transition:opacity .3s;border-radius:0 0 6px 0}
+#bFlip:hover::after{opacity:1}
+
+/* SCRAPBOOK PAGE ELEMENTS */
+.pg-num{position:absolute;font-family:var(--font-hand);font-size:.76rem;color:var(--textl);opacity:.44}
+.pg-num-l{bottom:.9rem;left:1.3rem}.pg-num-r{bottom:.9rem;right:1.3rem}
+.pg-title{font-family:var(--font-script);font-size:2rem;color:var(--rose2);display:inline-block;position:relative;margin-bottom:.55rem}
+.pg-title::after{content:'';display:block;width:100%;height:1.5px;background:linear-gradient(to right,var(--rose),transparent);margin-top:.05rem}
+.pol{background:#fff;padding:.5rem .5rem 0;box-shadow:2px 4px 14px rgba(0,0,0,.18),0 1px 4px rgba(0,0,0,.07);display:inline-block;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+.pol:hover{box-shadow:5px 10px 24px rgba(0,0,0,.22);transform:scale(1.05) rotate(0deg)!important}
+.pol img{display:block;width:100%;object-fit:cover}
+.pol .cap{font-family:var(--font-hand);font-size:.78rem;color:var(--textl);text-align:center;padding:.42rem .2rem .32rem;min-height:2.1rem;line-height:1.3}
+.tl{transform:rotate(-3.5deg)}.tr{transform:rotate(3deg)}.ts{transform:rotate(-1deg)}.tu{transform:rotate(1.8deg)}
+.tape{position:absolute;width:55px;height:19px;z-index:6;background:rgba(248,220,175,.7);border:1px solid rgba(220,180,120,.26);border-radius:.07rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.washi{position:absolute;left:0;right:0;height:1.2rem;opacity:.55}
+.washi-pk{background:repeating-linear-gradient(90deg,#f9a0bb 0,#f9a0bb 5px,#fcc8d8 5px,#fcc8d8 10px)}
+.washi-pe{background:repeating-linear-gradient(90deg,#f8c0a0 0,#f8c0a0 5px,#fad8b8 5px,#fad8b8 10px)}
+.washi-ro{background:repeating-linear-gradient(90deg,#d47090 0,#d47090 5px,#e898a8 5px,#e898a8 10px)}
+.sticky{padding:.8rem .9rem;font-family:var(--font-hand);font-size:.9rem;line-height:1.55;color:var(--text);max-width:185px;box-shadow:2px 3px 10px rgba(0,0,0,.1);position:relative}
+.sticky::before{content:'';position:absolute;top:0;left:0;width:100%;height:.15rem;background:rgba(0,0,0,.04)}
+.sty{background:#fff9c4}.stp{background:#fce4ef}.stg{background:#e8f5e4}
+.note{font-family:var(--font-hand);font-size:.97rem;line-height:1.65;color:var(--text)}
+.note em{color:var(--rose2);font-style:italic}
+.stamp{display:inline-block;font-family:var(--font-hand);font-size:.8rem;color:var(--rose2);border:1.5px solid var(--rose);padding:.1rem .42rem;border-radius:.14rem;transform:rotate(-4deg);opacity:.6}
+.stk{position:absolute;font-size:1.3rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,.12));animation:stkf 3.5s ease-in-out infinite}
+@keyframes stkf{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.pg-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:.8rem}
+.pg-cell{border-radius:.2rem;overflow:hidden;box-shadow:2px 2px 8px rgba(0,0,0,.11);cursor:pointer;transition:transform .3s}
+.pg-cell:hover{transform:scale(1.04)}
+.pg-cell img{display:block;width:100%;height:78px;object-fit:cover}
+.pg-cell .lb{font-family:var(--font-hand);font-size:.7rem;color:var(--textl);text-align:center;padding:.22rem;background:#fff}
+/* Cover pages */
+.cover-l{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;background:radial-gradient(ellipse 80% 80% at 50% 50%,#fff8f2 0%,var(--paper2) 100%)}
+.cover-r{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;background:linear-gradient(140deg,#7a3048 0%,#a05870 45%,#7a3048 100%);border-radius:0 5px 5px 0;position:relative}
+.cover-r::before{content:'';position:absolute;inset:8px;border:1px solid rgba(255,255,255,.18);border-radius:3px;pointer-events:none}
+.cov-floral{color:rgba(255,255,255,.5);font-size:1rem;letter-spacing:.4rem;margin:.3rem 0}
+.cov-title{font-family:var(--font-script);font-size:3rem;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.2);line-height:1.1}
+.cov-line{width:55px;height:1px;background:rgba(200,160,90,.55);margin:.6rem auto}
+.cov-sub{font-family:var(--font-hand);font-size:.95rem;color:rgba(255,255,255,.72);letter-spacing:.07em}
+.cov-hint{font-family:var(--font-hand);font-size:.78rem;color:rgba(255,255,255,.38);margin-top:1rem;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.38}50%{opacity:.85}}
+
+/* Navigation dots */
+.alb-nav{display:flex;align-items:center;gap:1.3rem;margin-top:1.5rem;justify-content:center}
+.ab{width:40px;height:40px;border-radius:50%;border:2px solid var(--rose);background:var(--cream);color:var(--rose2);font-size:1.2rem;cursor:pointer;transition:all .3s;box-shadow:0 2px 12px rgba(180,80,100,.14);display:flex;align-items:center;justify-content:center}
+.ab:hover:not(:disabled){background:var(--rose);color:#fff;transform:scale(1.08)}
+.ab:disabled{opacity:.25;cursor:not-allowed}
+.adots{display:flex;gap:.5rem}.dot{width:8px;height:8px;border-radius:50%;background:rgba(212,104,126,.3);cursor:pointer;transition:all .3s}
+.dot.active{background:var(--rose);transform:scale(1.25)}
+
+/* ═══════════════════════════════════════════
+   SECTION 3 — MEMORY WALL
+═══════════════════════════════════════════ */
+#memories{min-height:100vh;padding:5rem 2rem;display:flex;flex-direction:column;align-items:center;
+  background:radial-gradient(ellipse 80% 50% at 20% 30%,#fde8f5 0%,transparent 55%),
+             radial-gradient(ellipse 60% 40% at 90% 70%,#fde0d8 0%,transparent 50%),var(--cream)}
+
+/* Upload form */
+.mem-form-wrap{background:var(--paper);border-radius:.6rem;max-width:560px;width:100%;padding:2.2rem 2rem;
+  box-shadow:0 16px 50px var(--sh),inset 0 0 0 1px rgba(255,255,255,.6);margin-bottom:3rem;position:relative}
+.mem-form-wrap::before{content:'';position:absolute;inset:5rem 2rem 1.5rem;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,rgba(200,170,140,.13) 27px,rgba(200,170,140,.13) 28px);pointer-events:none;border-radius:.2rem}
+.mem-form-title{font-family:var(--font-script);font-size:2rem;color:var(--rose2);margin-bottom:.3rem}
+.mem-form-sub{font-family:var(--font-hand);font-size:.88rem;color:var(--textl);margin-bottom:1.2rem}
+.mem-form-row{margin-bottom:.9rem}
+.mem-label{display:block;font-family:var(--font-hand);font-size:.88rem;color:var(--textl);margin-bottom:.3rem}
+.mem-input{width:100%;padding:.6rem .8rem;background:rgba(253,248,242,.8);border:1.5px solid rgba(212,104,126,.22);border-radius:.35rem;font-family:var(--font-serif);font-size:.95rem;color:var(--text);outline:none;transition:border-color .25s}
+.mem-input:focus{border-color:var(--rose)}
+textarea.mem-input{height:80px;resize:vertical}
+/* Drop zone */
+#dropZone{width:100%;height:110px;border:2px dashed rgba(212,104,126,.35);border-radius:.4rem;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;background:rgba(253,240,245,.4);background-size:cover;background-position:center;position:relative;overflow:hidden}
+#dropZone:hover,#dropZone.drag-over{border-color:var(--rose);background-color:rgba(253,230,240,.6)}
+.drop-hint{font-family:var(--font-hand);font-size:.9rem;color:var(--textl);text-align:center;pointer-events:none;transition:opacity .3s}
+.drop-hint span{display:block;font-size:1.5rem;margin-bottom:.3rem}
+#memPhoto{display:none}
+.preview-clear{position:absolute;top:6px;right:8px;background:rgba(255,255,255,.8);border:1px solid var(--rose);border-radius:50%;width:22px;height:22px;font-size:.7rem;cursor:pointer;display:none;align-items:center;justify-content:center;color:var(--rose)}
+.mem-submit{width:100%;padding:.75rem;background:var(--rose);color:#fff;border:none;border-radius:3rem;font-family:var(--font-script);font-size:1.4rem;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(180,80,100,.3);margin-top:.6rem;letter-spacing:.02em}
+.mem-submit:hover{background:var(--rose2);transform:translateY(-1px);box-shadow:0 8px 28px rgba(180,80,100,.4)}
+.mem-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+/* Memory grid */
+.mem-grid-title{font-family:var(--font-script);font-size:2.5rem;color:var(--rose2);margin-bottom:1.5rem;text-align:center}
+.mem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.4rem;width:100%;max-width:900px}
+.mem-card{background:#fff;padding:.5rem .5rem 0;box-shadow:2px 4px 16px rgba(0,0,0,.16);transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;cursor:pointer}
+.mem-card:hover{transform:scale(1.04) rotate(0deg)!important;box-shadow:6px 12px 28px rgba(0,0,0,.2)}
+.mem-card img{display:block;width:100%;height:150px;object-fit:cover}
+.mem-no-photo{width:100%;height:150px;background:linear-gradient(135deg,#fce4ef,#f8c0d0);display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:rgba(212,104,126,.5)}
+.mem-body{padding:.5rem .3rem .4rem}
+.mem-card-title{font-family:var(--font-hand);font-size:.9rem;color:var(--text);font-weight:600;line-height:1.3}
+.mem-card-msg{font-family:var(--font-serif);font-style:italic;font-size:.8rem;color:var(--textl);margin-top:.2rem;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mem-card-author{font-family:var(--font-hand);font-size:.74rem;color:var(--rose);margin-top:.3rem}
+.mem-empty{font-family:var(--font-hand);font-size:1.1rem;color:var(--textl);text-align:center;padding:2rem;width:100%}
+.mem-loading{font-family:var(--font-hand);font-size:1rem;color:var(--textl);text-align:center;animation:blink 1.2s ease-in-out infinite}
+
+/* ═══════════════════════════════════════════
+   SECTION 4 — TYPEWRITER LETTER
+═══════════════════════════════════════════ */
+#letter{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6rem 2rem;
+  background:radial-gradient(ellipse 100% 60% at 50% 0%,#fff5ee 0%,transparent 60%),
+             radial-gradient(ellipse 80% 50% at 0% 100%,#fde8f5 0%,transparent 50%),var(--cream)}
+.ltr-wrap{position:relative;max-width:600px;width:100%;background:var(--paper);border-radius:.5rem;padding:3.2rem 2.8rem 2.8rem;box-shadow:0 20px 60px var(--sh),inset 0 0 0 1px rgba(255,255,255,.7);opacity:0;transform:translateY(28px)}
+.ltr-wrap.visible{opacity:1;transform:none;transition:opacity .9s,transform .9s cubic-bezier(.22,1,.36,1)}
+.ltr-wrap::before{content:'';position:absolute;inset:5rem 2.4rem 2rem;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,rgba(200,170,140,.18) 27px,rgba(200,170,140,.18) 28px);pointer-events:none;border-radius:.2rem}
+.ltr-wrap::after{content:'';position:absolute;left:3.6rem;top:2.8rem;bottom:2rem;width:1.5px;background:rgba(220,100,100,.12);pointer-events:none}
+.ltr-date{font-family:var(--font-hand);font-size:.86rem;color:var(--textl);margin-bottom:1.1rem;display:block}
+.ltr-dear{font-family:var(--font-script);font-size:1.95rem;color:var(--rose2);margin-bottom:.75rem}
+.ltr-body{font-size:.97rem;line-height:2;color:var(--text);min-height:8rem}
+.tw-cur{color:var(--rose);font-weight:700;animation:cb .75s step-end infinite}
+@keyframes cb{0%,100%{opacity:1}50%{opacity:0}}
+.ltr-sign{font-family:var(--font-script);font-size:1.75rem;color:var(--rose2);margin-top:1.4rem;transition:opacity .9s}
+.ltr-seal{position:absolute;bottom:-1.5rem;right:2.4rem;width:48px;height:48px;border-radius:50%;background:radial-gradient(circle,var(--rose2),var(--rose3));display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:rgba(255,255,255,.9);box-shadow:0 4px 16px rgba(140,50,70,.4);animation:sw 4s ease-in-out infinite}
+@keyframes sw{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(-3deg)}}
+
+/* ═══════════════════════════════════════════
+   SECTION 5 — BIRTHDAY CAKE
+═══════════════════════════════════════════ */
+#cake{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 90% 70% at 50% 100%,#ffe0e8 0%,transparent 55%),
+             radial-gradient(ellipse 80% 50% at 0% 30%,#fde8d8 0%,transparent 50%),
+             radial-gradient(ellipse 60% 40% at 100% 10%,#fce8f5 0%,transparent 50%),var(--cream2)}
+.cake-title-wrap{text-align:center;margin-bottom:1.5rem;opacity:0;transform:translateY(20px)}
+.cake-title-wrap.visible{opacity:1;transform:none;transition:opacity .8s,transform .8s}
+.cake-stage{position:relative;width:340px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+.cake-svg{width:340px;filter:drop-shadow(0 12px 28px rgba(180,80,100,.25));z-index:4;position:relative}
+.sburst{position:absolute;top:0;left:50%;transform:translateX(-50%);width:340px;height:220px;pointer-events:none;opacity:0;transition:opacity .5s;z-index:3}
+.sburst.show{opacity:1}
+.spark{position:absolute;border-radius:50%;animation:sparkfly var(--sd,1.5s) var(--sdl,0s) ease-out infinite;opacity:0}
+@keyframes sparkfly{0%{opacity:1;transform:translate(0,0)scale(1)}100%{opacity:0;transform:translate(var(--sx,0px),var(--sy,-60px))scale(0)}}
+.cake-msg{font-family:var(--font-script);font-size:2.8rem;color:var(--rose2);margin-top:1.5rem;text-align:center;opacity:0;transform:scale(.8);transition:opacity .8s,transform .8s cubic-bezier(.34,1.56,.64,1);text-shadow:0 2px 20px rgba(180,80,100,.3)}
+.cake-msg.show{opacity:1;transform:scale(1)}
+@keyframes wiggle{0%,100%{transform:translateX(-50%)}25%{transform:translateX(calc(-50% - 12px))}75%{transform:translateX(calc(-50% + 12px))}}
+
+/* ═══════════════════════════════════════════
+   SECTION 6 — FINAL
+═══════════════════════════════════════════ */
+#final{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6rem 2rem;position:relative;overflow:hidden;background:linear-gradient(170deg,var(--cream) 0%,#ffe8f0 40%,#fdf0e8 70%,var(--cream2) 100%)}
+.gring{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(212,104,126,.15) 0%,transparent 70%);animation:gp 3s ease-in-out infinite}
+@keyframes gp{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:.25}}
+.final-inner{position:relative;z-index:2;text-align:center;max-width:640px;opacity:0;transform:translateY(24px)}
+.final-inner.visible{opacity:1;transform:none;transition:opacity 1s,transform 1s cubic-bezier(.22,1,.36,1)}
+.final-lbl{font-family:var(--font-hand);font-size:1rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rose);margin-bottom:.8rem}
+.final-title{font-family:var(--font-script);font-size:clamp(3.5rem,9vw,7rem);color:var(--rose2);line-height:1.05;margin-bottom:1rem;text-shadow:0 4px 30px rgba(180,80,100,.25)}
+.final-div{width:60px;height:1.5px;background:linear-gradient(to right,transparent,var(--rose),transparent);margin:0 auto 1.5rem}
+.final-body{font-style:italic;font-size:clamp(1.1rem,2vw,1.4rem);line-height:1.9;color:var(--textl);margin-bottom:1.8rem}
+.final-sign{font-family:var(--font-script);font-size:2.2rem;color:var(--rose2)}
+.final-hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+
+@media(max-width:620px){
+  .book-frame{height:auto;min-height:560px;display:flex;flex-direction:column}
+  #bL,#bR,#bFront,#bBack{position:static;width:100%;height:auto;min-height:260px;border-radius:.5rem;margin-bottom:.3rem}
+  .book-spine,#bFlip{display:none}
+  .book-cover-bg,.book-edge,.pg-edge-r,.pg-edge-l{display:none}
+  .ltr-wrap{padding:2rem 1.4rem 1.8rem}.ltr-wrap::after{left:2.2rem}
+  .cake-svg,.cake-stage{width:290px}
+  .c-wrap{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Cursor ── -->
+<div id="cur1"></div><div id="cur2"></div>
+<div id="gpts"></div>
+
+<!-- ═══════════════════════════════════════════
+     NUMBER-SHAPED CANDLES (fixed, scroll-driven)
+
+     "1" candle: serif digit shape, rose/pink wax
+     "9" candle: ring + tail digit shape, gold wax
+     "19" candle: both side by side after merge
+═══════════════════════════════════════════ -->
+
+<!-- Candle "1" — starts at top of page, travels down -->
+<div class="c-wrap" id="tc1" style="right:18%;top:8vh">
+  <div class="c-glow" id="tc1glow"></div>
+  <svg id="c1svg" viewBox="0 0 46 148" width="46" height="148" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+    <defs>
+      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#e888b0"/>
+        <stop offset="35%" stop-color="#fde8f0"/>
+        <stop offset="100%" stop-color="#c8709a"/>
+      </linearGradient>
+      <!-- Flame glow filter -->
+      <filter id="fglow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <!-- FLAME (hidden until lit) -->
+    <g id="c1flame" style="opacity:0;transition:opacity .5s">
+      <ellipse cx="23" cy="5" rx="6" ry="7" fill="rgba(255,200,50,.35)" filter="url(#fglow)"/>
+      <path d="M23,4 C19,8 15,16 17,22 C19,27 27,27 29,22 C31,16 27,8 23,4Z" fill="#ffcc44"/>
+      <path d="M23,8 C21,11 19,17 21,21 C22,24 24,24 25,21 C27,17 25,11 23,8Z" fill="#fff8c0"/>
+    </g>
+    <!-- WICK -->
+    <rect x="22" y="22" width="2" height="9" rx="1" fill="#554433"/>
+    <!-- TOP FLAG OF "1" — the diagonal serif stroke -->
+    <path d="M10,38 L24,30 L24,44 L14,48Z" fill="url(#g1)"/>
+    <!-- MAIN VERTICAL SHAFT -->
+    <rect x="16" y="30" width="14" height="94" rx="3" fill="url(#g1)"/>
+    <!-- BOTTOM SERIF PLATFORM -->
+    <rect x="5" y="122" width="36" height="12" rx="3" fill="url(#g1)"/>
+    <!-- Wax highlight (simulates 3-D cylindrical light) -->
+    <rect x="19" y="32" width="4" height="88" rx="2" fill="rgba(255,255,255,.22)"/>
+    <rect x="8" y="124" width="8" height="8" rx="2" fill="rgba(255,255,255,.18)"/>
+  </svg>
+</div>
+
+<!-- Candle "9" — hidden, appears to meet the "1" -->
+<div class="c-wrap" id="tc9" style="left:18%;top:8vh;opacity:0;display:none">
+  <div class="c-glow" id="tc9glow"></div>
+  <svg id="c9svg" viewBox="0 0 56 152" width="56" height="152" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+    <defs>
+      <linearGradient id="g9" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#d89030"/>
+        <stop offset="35%" stop-color="#fff0b8"/>
+        <stop offset="100%" stop-color="#b87020"/>
+      </linearGradient>
+    </defs>
+    <!-- FLAME -->
+    <g id="c9flame" style="opacity:0;transition:opacity .5s">
+      <ellipse cx="28" cy="5" rx="6" ry="7" fill="rgba(255,200,50,.35)" filter="url(#fglow)"/>
+      <path d="M28,4 C24,8 20,16 22,22 C24,27 32,27 34,22 C36,16 32,8 28,4Z" fill="#ffcc44"/>
+      <path d="M28,8 C26,11 24,17 26,21 C27,24 29,24 30,21 C32,17 30,11 28,8Z" fill="#fff8c0"/>
+    </g>
+    <!-- WICK (pokes out of top of the ring) -->
+    <rect x="27" y="22" width="2" height="10" rx="1" fill="#554433"/>
+    <!-- "9" RING — donut shape using even-odd fill rule
+         Circle center: (28, 54)  outer-r: 22  inner-r: 13
+         Outer circle top-start:  (28, 32)
+         Inner circle top-start:  (28, 41)                  -->
+    <path fill-rule="evenodd" fill="url(#g9)"
+      d="M28,32 a22,22 0 1,0 0.001,0 Z M28,41 a13,13 0 1,0 0.001,0 Z"/>
+    <!-- "9" TAIL — descends from bottom of ring -->
+    <rect x="22" y="74" width="12" height="60" rx="4" fill="url(#g9)"/>
+    <!-- Highlights -->
+    <path d="M14,48 a15,15 0 0,1 11,-16" stroke="rgba(255,255,255,.28)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="25" y="78" width="4" height="50" rx="2" fill="rgba(255,255,255,.2)"/>
+  </svg>
+</div>
+
+<!-- Candle "19" — merged, travels to cake together -->
+<div class="c-wrap" id="tc19" style="left:50%;transform:translateX(-50%);top:8vh;opacity:0;display:none;flex-direction:row;align-items:flex-end;gap:6px">
+  <!-- 1 candle clone -->
+  <svg viewBox="0 0 46 148" width="40" height="140" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+    <use href="#c1svg"/>
+    <path d="M10,38 L24,30 L24,44 L14,48Z" fill="url(#g1)"/>
+    <rect x="16" y="30" width="14" height="94" rx="3" fill="url(#g1)"/>
+    <rect x="5" y="122" width="36" height="12" rx="3" fill="url(#g1)"/>
+    <rect x="19" y="32" width="4" height="88" rx="2" fill="rgba(255,255,255,.22)"/>
+    <rect x="27" y="22" width="2" height="9" rx="1" fill="#554433"/>
+    <g id="tc19f1" style="opacity:0;transition:opacity .5s">
+      <path d="M23,4 C19,8 15,16 17,22 C19,27 27,27 29,22 C31,16 27,8 23,4Z" fill="#ffcc44"/>
+      <path d="M23,8 C21,11 19,17 21,21 C22,24 24,24 25,21 C27,17 25,11 23,8Z" fill="#fff8c0"/>
+    </g>
+  </svg>
+  <!-- 9 candle clone -->
+  <svg viewBox="0 0 56 152" width="50" height="150" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+    <path fill-rule="evenodd" fill="url(#g9)" d="M28,32 a22,22 0 1,0 0.001,0 Z M28,41 a13,13 0 1,0 0.001,0 Z"/>
+    <rect x="22" y="74" width="12" height="60" rx="4" fill="url(#g9)"/>
+    <rect x="27" y="22" width="2" height="10" rx="1" fill="#554433"/>
+    <rect x="25" y="78" width="4" height="50" rx="2" fill="rgba(255,255,255,.2)"/>
+    <g id="tc19f2" style="opacity:0;transition:opacity .5s">
+      <path d="M28,4 C24,8 20,16 22,22 C24,27 32,27 34,22 C36,16 32,8 28,4Z" fill="#ffcc44"/>
+      <path d="M28,8 C26,11 24,17 26,21 C27,24 29,24 30,21 C32,17 30,11 28,8Z" fill="#fff8c0"/>
+    </g>
+  </svg>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — HERO
+═══════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-hearts" id="hh"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow" id="heroEyebrow">A Love Letter in Pages</div>
+    <h1 class="hero-title" id="heroTitle" data-text="For Your 19th Birthday">For Your 19th Birthday</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub" id="heroSub">Every memory we've made, every laugh we've shared —<br/>gathered here, just for you.</p>
+  </div>
+  <div class="hero-scroll"><span>scroll to begin</span><div class="scroll-line"></div></div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — SCRAPBOOK ALBUM
+═══════════════════════════════════════════ -->
+<section id="album">
+  <div class="sec-lbl reveal">Our Memory Book</div>
+  <div class="sec-ttl reveal">The Album</div>
+
+  <div class="book-outer">
+    <div class="book-cover-bg"></div>
+    <div class="book-edge"></div>
+    <div class="book-frame">
+      <div id="bL"></div>
+      <div class="book-spine"></div>
+      <div id="bR"></div>
+      <div class="pg-edge-r"></div>
+      <div class="pg-edge-l"></div>
+      <div id="bFlip">
+        <div class="b-face" id="bFront"></div>
+        <div class="b-face" id="bBack"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alb-nav">
+    <button class="ab" id="abPrev" disabled>&#8249;</button>
+    <div class="adots" id="aDots"></div>
+    <button class="ab" id="abNext">&#8250;</button>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — MEMORY WALL
+═══════════════════════════════════════════ -->
+<section id="memories">
+  <div class="sec-lbl reveal">A Timeless Album</div>
+  <div class="sec-ttl reveal">Add Your Memory</div>
+
+  <!-- Upload Form -->
+  <div class="mem-form-wrap reveal">
+    <div class="mem-form-title">Leave a Memory ♡</div>
+    <div class="mem-form-sub">Upload a photo and a note — it'll live here forever.</div>
+    <form id="memForm" enctype="multipart/form-data">
+      <div class="mem-form-row">
+        <label class="mem-label" for="memTitle">Title *</label>
+        <input class="mem-input" id="memTitle" name="title" placeholder="e.g. That road trip in June…" required maxlength="120"/>
+      </div>
+      <div class="mem-form-row">
+        <label class="mem-label" for="memMsg">Your message</label>
+        <textarea class="mem-input" id="memMsg" name="message" placeholder="What made this moment special?" maxlength="600"></textarea>
+      </div>
+      <div class="mem-form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+        <div>
+          <label class="mem-label" for="memAuthor">Your name</label>
+          <input class="mem-input" id="memAuthor" name="author" placeholder="Anonymous" maxlength="60"/>
+        </div>
+        <div>
+          <label class="mem-label">Photo (optional)</label>
+          <div id="dropZone">
+            <input type="file" id="memPhoto" name="photo" accept="image/*"/>
+            <div class="drop-hint"><span>📷</span>click or drag a photo</div>
+            <button type="button" class="preview-clear" id="clearPhoto">✕</button>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="mem-submit" id="memSubmit">Save Memory ♡</button>
+    </form>
+  </div>
+
+  <!-- Memory grid (loaded from API) -->
+  <div class="mem-grid-title" id="memGridTitle">All Memories</div>
+  <div class="mem-grid" id="memGrid">
+    <div class="mem-loading">loading memories…</div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — TYPEWRITER LETTER
+═══════════════════════════════════════════ -->
+<section id="letter">
+  <div class="sec-lbl reveal">A Note From the Heart</div>
+  <div class="sec-ttl reveal">For You</div>
+  <div class="ltr-wrap" id="ltrCard">
+    <span class="ltr-date" id="ltrDate"></span>
+    <div class="ltr-dear" id="ltrDear">My Dearest,</div>
+    <p class="ltr-body" id="twBody"></p>
+    <span class="tw-cur" id="twCur">|</span>
+    <div class="ltr-sign" id="ltrSign" style="opacity:0">— With all my love ♡</div>
+    <div class="ltr-seal">♡</div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5 — BIRTHDAY CAKE
+═══════════════════════════════════════════ -->
+<section id="cake">
+  <div class="cake-title-wrap reveal" id="cakeTitle">
+    <div class="sec-lbl" style="opacity:1">Make a Wish</div>
+    <div class="sec-ttl" id="cakeTtl" style="opacity:1;transform:none">Happy 19th!</div>
+  </div>
+
+  <div class="cake-stage" id="cakeStage">
+    <!-- "19" candle that lands on the cake (in DOM, absolutely positioned) -->
+    <div id="ck19" style="display:none;position:absolute;top:-115px;left:50%;transform:translateX(-50%);flex-direction:row;align-items:flex-end;gap:5px;z-index:10">
+      <!-- "1" -->
+      <svg viewBox="0 0 46 148" width="38" height="132" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+        <path d="M10,38 L24,30 L24,44 L14,48Z" fill="url(#g1)"/>
+        <rect x="16" y="30" width="14" height="94" rx="3" fill="url(#g1)"/>
+        <rect x="5" y="122" width="36" height="12" rx="3" fill="url(#g1)"/>
+        <rect x="19" y="32" width="4" height="88" rx="2" fill="rgba(255,255,255,.22)"/>
+        <rect x="22" y="22" width="2" height="9" rx="1" fill="#554433"/>
+        <g id="lf1" style="opacity:0;transition:opacity .6s">
+          <ellipse cx="23" cy="5" rx="6" ry="7" fill="rgba(255,200,50,.3)" filter="url(#fglow)"/>
+          <path d="M23,4 C19,8 15,16 17,22 C19,27 27,27 29,22 C31,16 27,8 23,4Z" fill="#ffcc44"/>
+          <path d="M23,8 C21,11 19,17 21,21 C22,24 24,24 25,21 C27,17 25,11 23,8Z" fill="#fff8c0"/>
+        </g>
+      </svg>
+      <!-- "9" -->
+      <svg viewBox="0 0 56 152" width="46" height="140" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+        <path fill-rule="evenodd" fill="url(#g9)" d="M28,32 a22,22 0 1,0 0.001,0 Z M28,41 a13,13 0 1,0 0.001,0 Z"/>
+        <rect x="22" y="74" width="12" height="60" rx="4" fill="url(#g9)"/>
+        <rect x="27" y="22" width="2" height="10" rx="1" fill="#554433"/>
+        <rect x="25" y="78" width="4" height="50" rx="2" fill="rgba(255,255,255,.2)"/>
+        <g id="lf2" style="opacity:0;transition:opacity .6s">
+          <ellipse cx="28" cy="5" rx="6" ry="7" fill="rgba(255,200,50,.3)" filter="url(#fglow)"/>
+          <path d="M28,4 C24,8 20,16 22,22 C24,27 32,27 34,22 C36,16 32,8 28,4Z" fill="#ffcc44"/>
+          <path d="M28,8 C26,11 24,17 26,21 C27,24 29,24 30,21 C32,17 30,11 28,8Z" fill="#fff8c0"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Three-tier birthday cake SVG -->
+    <svg class="cake-svg" viewBox="0 0 340 225" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="170" cy="215" rx="145" ry="10" fill="rgba(180,80,100,.08)"/>
+      <rect x="28" y="148" width="284" height="66" rx="10" fill="url(#ct1)"/>
+      <ellipse cx="170" cy="148" rx="142" ry="14" fill="url(#ct1t)"/>
+      <ellipse cx="170" cy="214" rx="142" ry="11" fill="#e0a8bc"/>
+      <path d="M48,148 Q58,138 68,148 Q78,138 88,148 Q98,138 108,148 Q118,138 128,148 Q138,138 148,148 Q158,138 168,148 Q178,138 188,148 Q198,138 208,148 Q218,138 228,148 Q238,138 248,148 Q258,138 268,148 Q278,138 288,148 Q298,138 308,148" fill="#fde8f0"/>
+      <rect x="28" y="164" width="284" height="8" rx="2" fill="rgba(212,100,126,.2)"/>
+      <circle cx="75" cy="178" r="5" fill="#f8a0b8" opacity=".8"/><circle cx="125" cy="184" r="4" fill="#f8d0a0" opacity=".8"/>
+      <circle cx="170" cy="178" r="5" fill="#f8a0b8" opacity=".8"/><circle cx="215" cy="184" r="4" fill="#f8d0a0" opacity=".8"/>
+      <circle cx="260" cy="178" r="5" fill="#f8a0b8" opacity=".8"/>
+      <rect x="64" y="97" width="212" height="57" rx="8" fill="url(#ct2)"/>
+      <ellipse cx="170" cy="97" rx="106" ry="11" fill="url(#ct2t)"/>
+      <ellipse cx="170" cy="154" rx="106" ry="10" fill="#d8a0b4"/>
+      <path d="M74,97 Q82,89 90,97 Q98,89 106,97 Q114,89 122,97 Q130,89 138,97 Q146,89 154,97 Q162,89 170,97 Q178,89 186,97 Q194,89 202,97 Q210,89 218,97 Q226,89 234,97 Q242,89 250,97 Q258,89 266,97" fill="#fde8f0"/>
+      <rect x="64" y="114" width="212" height="7" rx="2" fill="rgba(212,100,126,.18)"/>
+      <circle cx="100" cy="126" r="4" fill="#f8a0b8" opacity=".7"/><circle cx="140" cy="132" r="3" fill="#f8d0a0" opacity=".7"/>
+      <circle cx="170" cy="126" r="4" fill="#f8a0b8" opacity=".7"/><circle cx="200" cy="132" r="3" fill="#f8d0a0" opacity=".7"/>
+      <circle cx="240" cy="126" r="4" fill="#f8a0b8" opacity=".7"/>
+      <rect x="110" y="55" width="120" height="48" rx="7" fill="url(#ct3)"/>
+      <ellipse cx="170" cy="55" rx="60" ry="8" fill="url(#ct3t)"/>
+      <ellipse cx="170" cy="103" rx="60" ry="7" fill="#e8aab8"/>
+      <path d="M118,55 Q125,48 132,55 Q139,48 146,55 Q153,48 160,55 Q167,48 174,55 Q181,48 188,55 Q195,48 202,55 Q209,48 216,55 Q222,48 222,55" fill="#fde8f0"/>
+      <text x="170" y="84" text-anchor="middle" font-size="14" fill="rgba(255,255,255,.55)">♡</text>
+      <text x="142" y="77" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.4)">✿</text>
+      <text x="198" y="77" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.4)">✿</text>
+      <defs>
+        <linearGradient id="ct1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5c8d8"/><stop offset="100%" stop-color="#e898b8"/></linearGradient>
+        <radialGradient id="ct1t" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fce4ef"/><stop offset="100%" stop-color="#f8c0d4"/></radialGradient>
+        <linearGradient id="ct2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f8d8e8"/><stop offset="100%" stop-color="#ecaac4"/></linearGradient>
+        <radialGradient id="ct2t" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fdeef5"/><stop offset="100%" stop-color="#f8cce0"/></radialGradient>
+        <linearGradient id="ct3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fce8f0"/><stop offset="100%" stop-color="#f0b4c8"/></linearGradient>
+        <radialGradient id="ct3t" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fff0f6"/><stop offset="100%" stop-color="#fcd8e8"/></radialGradient>
+      </defs>
+    </svg>
+    <div class="sburst" id="sBurst"></div>
+    <div class="cake-msg" id="cakeMsg">Happy Birthday! ♡</div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6 — FINAL
+═══════════════════════════════════════════ -->
+<section id="final">
+  <div class="gring" style="width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+  <div class="final-hearts" id="fh"></div>
+  <div class="final-inner reveal" id="finalMsg">
+    <div class="final-lbl">✿ With All My Love ✿</div>
+    <h2 class="final-title" id="finalTitle">Happy Birthday</h2>
+    <div class="final-div"></div>
+    <p class="final-body" id="finalBody">Nineteen years of you — and somehow you just keep<br/>getting more wonderful.<br/><br/>May this year bring you everything you've ever wished for,<br/>and all the things you haven't thought to wish for yet.</p>
+    <div class="final-sign" id="finalSign">Forever yours ♡</div>
+  </div>
+</section>
+
+
+<script>
+/* ═══════════════════════════════════════════════
+   SITE CONFIG — overridden by /api/config
+═══════════════════════════════════════════════ */
+const S = {
+  recipient:'My Love', age:19, sender:'',
+  accentColor:'#d4687e', letterText:null
+};
+
+/* ── Helpers ── */
+const $  = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ═══════════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════════ */
+const c1=$('cur1'),c2=$('cur2');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;c2.style.left=mx+'px';c2.style.top=my+'px'});
+(function a(){cx+=(mx-cx)*.11;cy+=(my-cy)*.11;c1.style.left=cx+'px';c1.style.top=cy+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('button,a,.pol,.ab,.mem-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{c1.style.width='34px';c1.style.height='34px';c1.style.background='rgba(212,104,126,.16)'});
+  el.addEventListener('mouseleave',()=>{c1.style.width='18px';c1.style.height='18px';c1.style.background='rgba(212,104,126,.3)'});
+});
+
+/* ═══════════════════════════════════════════════
+   PARTICLES + HEARTS
+═══════════════════════════════════════════════ */
+(()=>{
+  const c=$('gpts'),sy=['✦','·','✿','❀','•','◦','✧'];
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');p.className='gpt';
+    p.textContent=sy[~~(Math.random()*sy.length)];
+    p.style.cssText=`left:${Math.random()*100}vw;font-size:${.44+Math.random()*.5}rem;animation-delay:${Math.random()*22}s;animation-duration:${16+Math.random()*22}s`;
+    c.appendChild(p);
+  }
+})();
+function spawnHearts(container,n){
+  const h=['♡','♥','❤','✿','✦','❀'];
+  for(let i=0;i<n;i++){
+    const el=document.createElement('div');el.className='fh';
+    el.textContent=h[~~(Math.random()*h.length)];
+    el.style.cssText=`left:${Math.random()*100}%;bottom:-1rem;font-size:${.7+Math.random()*1.1}rem;animation-delay:${Math.random()*10}s;animation-duration:${7+Math.random()*9}s;color:hsl(${338+Math.random()*22}deg,${56+Math.random()*28}%,${54+Math.random()*22}%)`;
+    container.appendChild(el);
+  }
+}
+spawnHearts($('hh'),18);
+spawnHearts($('fh'),16);
+
+/* ═══════════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════════ */
+const revObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target)}})
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+/* ═══════════════════════════════════════════════
+   BOOK PAGE CONTENT (3 spreads)
+═══════════════════════════════════════════════ */
+function buildPages(name,age){
+  return [
+    // SPREAD 0 — Cover
+    {
+      left:`<div class="cover-l">
+        <div style="font-size:2rem;color:var(--rose);animation:stkf 3s ease-in-out infinite">✿</div>
+        <div style="font-family:var(--font-hand);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--textl);margin:.5rem 0">A Memory Book</div>
+        <div style="font-family:var(--font-script);font-size:2.2rem;color:var(--rose2);line-height:1.1">For ${esc(name)}</div>
+        <div style="width:46px;height:1.5px;background:linear-gradient(to right,transparent,var(--rose),transparent);margin:.7rem auto"></div>
+        <div style="font-family:var(--font-hand);font-size:.88rem;color:var(--textl);line-height:1.6;max-width:140px">every memory, every moment, all of it</div>
+        <div style="font-size:1.4rem;color:var(--blush);margin-top:.8rem;letter-spacing:.4rem">✾ ✾ ✾</div>
+      </div>`,
+      right:`<div class="cover-r">
+        <div class="cov-floral">✿ ❀ ✾</div>
+        <div class="cov-title">Our Story</div>
+        <div class="cov-line"></div>
+        <div class="cov-sub">For Your ${esc(age)}th Birthday</div>
+        <div class="cov-sub" style="margin-top:.3rem;font-size:.8rem;color:rgba(255,255,255,.5)">${new Date().getFullYear()}</div>
+        <div class="cov-floral" style="transform:scaleX(-1)">✿ ❀ ✾</div>
+        <div class="cov-hint">turn the page →</div>
+      </div>`,
+    },
+    // SPREAD 1 — The Beginning
+    {
+      left:`<div class="pg-title">The Beginning</div>
+        <div style="margin-top:.8rem;position:relative;display:inline-block">
+          <div class="tape" style="top:-8px;left:50%;transform:translateX(-50%) rotate(-2deg)"></div>
+          <div class="pol tl" style="width:172px">
+            <img src="https://picsum.photos/seed/mem1/344/240" style="width:172px;height:118px;object-fit:cover" alt="memory" loading="lazy"/>
+            <div class="cap">the day it all started ♡</div>
+          </div>
+        </div>
+        <div class="note" style="margin-top:.9rem;max-width:190px"><span style="color:var(--rose);font-size:1.1rem">✿ </span>I knew from the first moment — you were <em>different.</em></div>
+        <div class="sticky sty" style="margin-top:.8rem;transform:rotate(2deg)"><p>Some beginnings are too beautiful to forget ✦</p></div>
+        <div class="pg-num pg-num-l">p.01</div>
+        <div class="stk" style="bottom:1.6rem;right:1rem;font-size:1.7rem">🌸</div>`,
+      right:`<div class="washi washi-pk" style="top:1.6rem"></div>
+        <div style="margin-top:3rem;text-align:right;padding-right:.2rem">
+          <div class="tape" style="top:-8px;right:18px;transform:rotate(10deg)"></div>
+          <div class="pol tr" style="width:162px;display:inline-block">
+            <img src="https://picsum.photos/seed/mem2/324/228" style="width:162px;height:112px;object-fit:cover" alt="memory" loading="lazy"/>
+            <div class="cap">our favourite adventure</div>
+          </div>
+        </div>
+        <div class="note" style="margin-top:1rem;font-size:1rem">Two hearts, one story —<br/>still being written.</div>
+        <div class="stamp" style="margin-top:.7rem;display:inline-block">forever &amp; always</div>
+        <div class="stk" style="top:2.5rem;left:.9rem;font-size:1.4rem;animation-delay:.4s">⭐</div>
+        <div class="pg-num pg-num-r">p.02</div>`,
+    },
+    // SPREAD 2 — Little Moments
+    {
+      left:`<div class="pg-title">Little Moments</div>
+        <div class="pg-grid" style="margin-top:.8rem">
+          <div class="pg-cell"><img src="https://picsum.photos/seed/mem3/200/156" loading="lazy" alt="memory"/><div class="lb">mornings ☀</div></div>
+          <div class="pg-cell"><img src="https://picsum.photos/seed/mem4/200/156" loading="lazy" alt="memory"/><div class="lb">laughter ♪</div></div>
+          <div class="pg-cell"><img src="https://picsum.photos/seed/mem5/200/156" loading="lazy" alt="memory"/><div class="lb">quiet evenings ✦</div></div>
+          <div class="pg-cell"><img src="https://picsum.photos/seed/mem8/200/156" loading="lazy" alt="memory"/><div class="lb">all of you ♡</div></div>
+        </div>
+        <div style="margin-top:.6rem;font-family:var(--font-hand);font-size:.78rem;color:var(--textl);text-align:center">collected memories</div>
+        <div class="pg-num pg-num-l">p.03</div>`,
+      right:`<div class="washi washi-pe" style="top:2rem"></div>
+        <div style="margin-top:3.2rem">
+          <div class="tape" style="top:-7px;left:50%;transform:translateX(-50%) rotate(-3deg)"></div>
+          <div class="pol tl" style="width:178px">
+            <img src="https://picsum.photos/seed/mem6/356/248" loading="lazy" style="width:178px;height:120px;object-fit:cover" alt="memory"/>
+            <div class="cap">this one's my favourite</div>
+          </div>
+        </div>
+        <div class="sticky stp" style="margin-top:.8rem;transform:rotate(-2deg)"><p>The little things are actually the big things in disguise.</p></div>
+        <div class="stk" style="bottom:1.6rem;right:.8rem;font-size:1.3rem;animation-delay:.6s">✨</div>
+        <div class="pg-num pg-num-r">p.04</div>`,
+    },
+    // SPREAD 3 — Things I Love
+    {
+      left:`<div class="pg-title" style="margin-top:.1rem">Things I Love</div>
+        <ul style="margin-top:.6rem;list-style:none">
+          ${['The way you laugh, wholly','How you remember everything','Your ridiculous sense of humor','How you make any day better','The way you see the best in everyone','Your voice — especially when tired','Absolutely everything else']
+            .map((t,i)=>`<li style="padding:.3rem 0;border-bottom:1px dashed rgba(180,100,100,.16);font-family:var(--font-hand);font-size:.9rem;color:var(--text);display:flex;gap:.4rem;align-items:baseline"><span style="color:var(--rose);font-family:var(--font-script);font-size:1.05rem;min-width:1.5rem">0${i+1}.</span>${esc(t)}</li>`).join('')}
+        </ul>
+        <div style="margin-top:.5rem;font-family:var(--font-hand);font-size:.78rem;color:var(--textl)">(this list goes on forever)</div>
+        <div class="pg-num pg-num-l">p.05</div>`,
+      right:`<div class="washi washi-ro" style="top:1.6rem"></div>
+        <div style="margin-top:3rem;text-align:right">
+          <div class="tape" style="top:-7px;right:16px;transform:rotate(8deg)"></div>
+          <div class="pol tr" style="width:172px;display:inline-block">
+            <img src="https://picsum.photos/seed/mem7/344/240" loading="lazy" style="width:172px;height:118px;object-fit:cover" alt="memory"/>
+            <div class="cap">us, always ♡</div>
+          </div>
+        </div>
+        <div class="sticky stg" style="margin-top:.8rem;transform:rotate(2deg);max-width:172px"><p>Here's to ${esc(age)} — and every year after, together. ✿</p></div>
+        <div class="stk" style="bottom:1.6rem;right:.7rem;font-size:1.8rem;animation-delay:.3s">💫</div>
+        <div class="pg-num pg-num-r">p.06</div>`,
+    },
+  ];
+}
+
+/* ═══════════════════════════════════════════════
+   BOOK FLIP ENGINE
+═══════════════════════════════════════════════ */
+let pages=[],curPage=0,flipping=false;
+const bL=$('bL'),bR=$('bR'),bFlip=$('bFlip'),bFront=$('bFront'),bBack=$('bBack');
+const abPrev=$('abPrev'),abNext=$('abNext'),dotsEl=$('aDots');
+
+function initBook(name,age){
+  pages=buildPages(name,age);
+  const total=pages.length;
+
+  // Build dots
+  dotsEl.innerHTML='';
+  pages.forEach((_,i)=>{
+    const d=document.createElement('div');d.className='dot'+(i===0?' active':'');
+    d.dataset.i=i;d.addEventListener('click',()=>goPage(+d.dataset.i,+d.dataset.i>curPage?'f':'b'));
+    dotsEl.appendChild(d);
+  });
+
+  // Render initial state
+  bL.innerHTML=pages[0].left;
+  bFront.innerHTML=pages[0].right;
+  bR.innerHTML=pages[1]?pages[1].right:'';
+  bBack.innerHTML='';
+  updateBookNav();
+}
+
+function updateBookNav(){
+  abPrev.disabled=curPage===0;
+  abNext.disabled=curPage===pages.length-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===curPage));
+}
+
+function goPage(to,dir='f'){
+  if(flipping||to===curPage||to<0||to>=pages.length) return;
+  flipping=true;
+
+  if(dir==='f'){
+    bBack.innerHTML=pages[to].left;
+    bFlip.style.transition='transform 1s cubic-bezier(.645,.045,.355,1)';
+    bFlip.style.transform='rotateY(-180deg)';
+  } else {
+    bFront.innerHTML=pages[to].right;
+    bBack.innerHTML=pages[curPage].left;
+    bFlip.style.transition='none';
+    bFlip.style.transform='rotateY(-180deg)';
+    void bFlip.offsetWidth;
+    bFlip.style.transition='transform 1s cubic-bezier(.645,.045,.355,1)';
+    bFlip.style.transform='rotateY(0deg)';
+    bL.innerHTML=pages[to].left;
+  }
+
+  bFlip.addEventListener('transitionend',function h(){
+    bFlip.removeEventListener('transitionend',h);
+    bFlip.style.opacity='0';bFlip.style.transition='none';
+    if(dir==='f'){
+      bL.innerHTML=pages[to].left;
+      bFront.innerHTML=pages[to].right;
+      bBack.innerHTML='';
+      bFlip.style.transform='rotateY(0deg)';
+      bR.innerHTML=pages[to+1]?pages[to+1].right:'';
+    }
+    curPage=to;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      bFlip.style.transition='';bFlip.style.opacity='1';
+      flipping=false;updateBookNav();
+    }));
+  },{once:true});
+}
+
+abPrev.addEventListener('click',()=>goPage(curPage-1,'b'));
+abNext.addEventListener('click',()=>goPage(curPage+1,'f'));
+
+// Mouse-hover page-curl tease
+bFlip.addEventListener('mousemove',e=>{
+  if(flipping||curPage===pages.length-1)return;
+  const r=bFront.getBoundingClientRect();
+  const p=Math.max(0,1-(e.clientX-r.left)/r.width);
+  if(p>0.08){bFlip.style.transition='none';bFlip.style.transform=`rotateY(${-p*14}deg)`}
+});
+bFlip.addEventListener('mouseleave',()=>{
+  if(!flipping){bFlip.style.transition='transform .5s ease';bFlip.style.transform='rotateY(0deg)'}
+});
+bFlip.addEventListener('click',()=>goPage(curPage+1,'f'));
+
+// Swipe
+let sx=0;
+bFlip.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+bFlip.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)>50){dx<0?goPage(curPage+1,'f'):goPage(curPage-1,'b')}
+},{passive:true});
+
+/* ═══════════════════════════════════════════════
+   MEMORY WALL (backend connected)
+═══════════════════════════════════════════════ */
+async function loadMemories(){
+  const grid=$('memGrid');
+  try{
+    const r=await fetch('/api/memories');
+    const mems=await r.json();
+    $('memGridTitle').textContent=`${mems.length || 'No'} Memories`;
+    if(!mems.length){grid.innerHTML='<div class="mem-empty">Be the first to add a memory ✿</div>';return}
+    const rotations=['tl','tr','ts','tu'];
+    grid.innerHTML=mems.map((m,i)=>`
+      <div class="mem-card ${rotations[i%4]}" data-id="${m.id}">
+        ${m.photo_name?`<img src="/uploads/${esc(m.photo_name)}" alt="${esc(m.title)}" loading="lazy"/>`:'<div class="mem-no-photo">✿</div>'}
+        <div class="mem-body">
+          <div class="mem-card-title">${esc(m.title)}</div>
+          ${m.message?`<div class="mem-card-msg">${esc(m.message)}</div>`:''}
+          <div class="mem-card-author">— ${esc(m.author)}</div>
+        </div>
+      </div>`).join('');
+    // Shift+click for admin delete
+    grid.querySelectorAll('.mem-card').forEach(card=>{
+      card.addEventListener('click',async e=>{
+        if(!e.shiftKey)return;
+        const key=prompt('Admin key to delete this memory:');
+        if(!key)return;
+        if(!confirm('Delete this memory permanently?'))return;
+        await fetch(`/api/memories/${card.dataset.id}`,{method:'DELETE',headers:{'x-admin-key':key}});
+        loadMemories();
+      });
+    });
+  }catch{
+    grid.innerHTML='<div class="mem-empty">Memories will appear here.</div>';
+  }
+}
+
+// Upload form
+const memForm=$('memForm');
+const dropZone=$('dropZone');
+const photoInput=$('memPhoto');
+const clearBtn=$('clearPhoto');
+
+dropZone.addEventListener('click',e=>{if(e.target!==clearBtn)photoInput.click()});
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over')});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop',e=>{
+  e.preventDefault();dropZone.classList.remove('drag-over');
+  const file=e.dataTransfer.files[0];
+  if(file&&file.type.startsWith('image/')){
+    const dt=new DataTransfer();dt.items.add(file);photoInput.files=dt.files;showPreview(file);
+  }
+});
+photoInput.addEventListener('change',()=>{if(photoInput.files[0])showPreview(photoInput.files[0])});
+clearBtn.addEventListener('click',()=>{
+  photoInput.value='';dropZone.style.backgroundImage='';
+  dropZone.querySelector('.drop-hint').style.opacity='1';clearBtn.style.display='none';
+});
+function showPreview(file){
+  const reader=new FileReader();
+  reader.onload=e=>{
+    dropZone.style.backgroundImage=`url(${e.target.result})`;
+    dropZone.style.backgroundSize='cover';dropZone.style.backgroundPosition='center';
+    dropZone.querySelector('.drop-hint').style.opacity='0';
+    clearBtn.style.display='flex';
+  };
+  reader.readAsDataURL(file);
+}
+
+memForm.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=$('memSubmit');
+  btn.disabled=true;btn.textContent='Saving… ♡';
+  try{
+    const fd=new FormData(memForm);
+    const r=await fetch('/api/memories',{method:'POST',body:fd});
+    const data=await r.json();
+    if(data.id){
+      memForm.reset();
+      dropZone.style.backgroundImage='';
+      dropZone.querySelector('.drop-hint').style.opacity='1';
+      clearBtn.style.display='none';
+      btn.textContent='✓ Memory saved!';
+      setTimeout(()=>{btn.disabled=false;btn.textContent='Save Memory ♡'},2200);
+      loadMemories();
+    } else {
+      btn.textContent=data.error||'Error — try again';
+      setTimeout(()=>{btn.disabled=false;btn.textContent='Save Memory ♡'},2000);
+    }
+  }catch{
+    btn.textContent='Connection error';
+    setTimeout(()=>{btn.disabled=false;btn.textContent='Save Memory ♡'},2000);
+  }
+});
+
+/* ═══════════════════════════════════════════════
+   TYPEWRITER LETTER
+═══════════════════════════════════════════════ */
+const DEFAULT_LETTER=[
+  "I've been sitting with these words for a while — ",
+  "trying to find the ones that fit what you mean to me.",
+  "\n\nYou are one of those rare people who changes the colour of the world just by being in it. ",
+  "Since I've known you, ordinary days have felt like something worth keeping.",
+  "\n\nNineteen years of you. ",
+  "I hope you know how loved you are — not just today, but every quiet Tuesday, ",
+  "every long night, every unexpected moment in between.",
+  "\n\nHappy Birthday. Here's to all the adventures still ahead of us."
+].join('');
+
+let twStarted=false,twDone=false;
+$('ltrDate').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+
+const ltrObs=new IntersectionObserver(es=>{
+  if(es[0].isIntersecting&&!twStarted){
+    twStarted=true;
+    $('ltrCard').classList.add('visible');
+    setTimeout(startTW,700);ltrObs.disconnect();
+  }
+},{threshold:.3});
+ltrObs.observe($('letter'));
+
+function startTW(){
+  if(twDone)return;twDone=true;
+  const txt=S.letterText||DEFAULT_LETTER;
+  const el=$('twBody'),cur=$('twCur'),sign=$('ltrSign');
+  let i=0;
+  (function step(){
+    if(i<txt.length){
+      if(txt[i]==='\n')el.innerHTML+='<br/>';
+      else el.textContent+=txt[i];
+      i++;
+      const pause='.!?,;:—'.includes(txt[i-1]);
+      setTimeout(step,pause?110+Math.random()*70:24+Math.random()*26);
+    }else{cur.style.display='none';sign.style.opacity='1';}
+  })();
+}
+
+/* ═══════════════════════════════════════════════
+   TRAVELING CANDLES  — "1" and "9" digit shapes
+   State machine: TRAVEL → MERGING → MERGED → LANDING → LANDED
+═══════════════════════════════════════════════ */
+const tc1=$('tc1'),tc9=$('tc9'),tc19=$('tc19');
+const ck19=$('ck19'),cakeSection=$('cake');
+const sBurst=$('sBurst'),cakeMsg=$('cakeMsg');
+
+const CS={TRAVEL:0,MERGING:1,MERGED:2,LANDING:3,LANDED:4};
+let candleState=CS.TRAVEL;
+let smoothY=scrollY,targetY=scrollY,rafId;
+
+window.addEventListener('scroll',()=>{targetY=scrollY},{passive:true});
+
+function candleRaf(){
+  smoothY+=(targetY-smoothY)*0.07;
+  const maxScroll=document.documentElement.scrollHeight-innerHeight;
+  const pct=Math.min(1,smoothY/maxScroll);
+
+  if(candleState===CS.TRAVEL){
+    // "1" travels from 8vh down to ~44vh as pct goes 0 → 0.5
+    const t=Math.min(1,pct/0.5);
+    tc1.style.top=(8+t*36)+'vh';
+
+    // Trigger merge when cake is within 2 screens
+    const cr=cakeSection.getBoundingClientRect();
+    if(cr.top<innerHeight*2) startMerge();
+  }
+
+  if(candleState===CS.MERGED){
+    // Check if it's time to land
+    const cr=cakeSection.getBoundingClientRect();
+    if(cr.top<innerHeight*0.5) landOnCake();
+  }
+
+  rafId=requestAnimationFrame(candleRaf);
+}
+candleRaf();
+
+function startMerge(){
+  if(candleState!==CS.TRAVEL)return;
+  candleState=CS.MERGING;
+
+  // Slide "1" to the right
+  tc1.style.transition='right .8s cubic-bezier(.22,1,.36,1),top .5s';
+  tc1.style.right='auto';tc1.style.left='55%';tc1.style.top='44vh';
+
+  // Show "9" from the left
+  tc9.style.display='flex';tc9.style.opacity='0';tc9.style.left='22%';tc9.style.top='44vh';
+  tc9.style.transition='opacity .6s,left .8s cubic-bezier(.22,1,.36,1)';
+  setTimeout(()=>{tc9.style.opacity='1';tc9.style.left='28%'},150);
+
+  // Both slide toward center and dissolve
+  setTimeout(()=>{
+    tc1.style.transition='left .55s ease-in,opacity .4s .3s';
+    tc9.style.transition='left .55s ease-in,opacity .4s .3s';
+    tc1.style.left='52%';tc9.style.left='36%';
+
+    setTimeout(()=>{
+      tc1.style.opacity='0';tc9.style.opacity='0';
+      // Show merged "19"
+      tc19.style.display='flex';
+      tc19.style.opacity='0';tc19.style.transform='translateX(-50%) scale(.8)';
+      tc19.style.transition='none';
+      setTimeout(()=>{
+        tc19.style.transition='opacity .55s,transform .65s cubic-bezier(.34,1.56,.64,1)';
+        tc19.style.opacity='1';tc19.style.transform='translateX(-50%) scale(1)';
+        tc1.style.display='none';tc9.style.display='none';
+        candleState=CS.MERGED;
+      },50);
+    },500);
+  },1100);
+}
+
+function landOnCake(){
+  if(candleState!==CS.MERGED)return;
+  candleState=CS.LANDING;
+  cancelAnimationFrame(rafId);
+
+  // Hide the fixed candle
+  tc19.style.transition='opacity .3s';tc19.style.opacity='0';
+  setTimeout(()=>tc19.style.display='none',300);
+
+  // Show in-DOM cake candle, drop it into position
+  ck19.style.display='flex';ck19.style.top='-115px';
+  void ck19.offsetWidth;
+  ck19.style.transition='top 1.1s cubic-bezier(.22,1,.36,1)';
+  ck19.style.top='-62px';
+
+  ck19.addEventListener('transitionend',function h(){
+    ck19.removeEventListener('transitionend',h);
+    candleState=CS.LANDED;
+    // Light flames
+    $('lf1').style.opacity='1';$('lf2').style.opacity='1';
+    // Wiggle celebration
+    setTimeout(()=>{
+      ck19.style.animation='wiggle .32s ease-in-out 3';
+    },400);
+    // Sparkles + message
+    setTimeout(celebrate,700);
+  });
+}
+
+function celebrate(){
+  sBurst.classList.add('show');
+  const cols=['#f4c2c2','#d4688e','#f9d8bc','#e898b8','#fff0c0','#f8c8e8','#c8e8f8'];
+  for(let i=0;i<55;i++){
+    const sp=document.createElement('div');sp.className='spark';
+    const a=Math.random()*360,d=55+Math.random()*95;
+    sp.style.cssText=`left:${50+Math.random()*28-14}%;top:${15+Math.random()*25}%;width:${4+Math.random()*5}px;height:${4+Math.random()*5}px;background:${cols[~~(Math.random()*cols.length)]};--sx:${Math.cos(a*Math.PI/180)*d}px;--sy:${-(Math.abs(Math.sin(a*Math.PI/180))*d+20)}px;--sd:${.8+Math.random()*.9}s;--sdl:${Math.random()*1.3}s;`;
+    sBurst.appendChild(sp);
+  }
+  setTimeout(()=>cakeMsg.classList.add('show'),500);
+}
+
+// Fallback: if user jumps straight to cake section
+const cakeObs=new IntersectionObserver(es=>{
+  if(!es[0].isIntersecting)return;
+  if(candleState===CS.TRAVEL){
+    tc1.style.display='none';tc9.style.display='none';tc19.style.display='none';
+    candleState=CS.LANDING;
+    cancelAnimationFrame(rafId);
+    setTimeout(()=>{
+      ck19.style.display='flex';ck19.style.top='-115px';
+      void ck19.offsetWidth;
+      ck19.style.transition='top 1s cubic-bezier(.22,1,.36,1)';
+      ck19.style.top='-62px';
+      ck19.addEventListener('transitionend',function h(){
+        ck19.removeEventListener('transitionend',h);
+        candleState=CS.LANDED;
+        $('lf1').style.opacity='1';$('lf2').style.opacity='1';
+        setTimeout(()=>{ck19.style.animation='wiggle .32s ease-in-out 3'},400);
+        setTimeout(celebrate,700);
+      });
+    },600);
+  }
+  if(candleState===CS.MERGED){tc19.style.display='none';landOnCake();}
+},{threshold:.4});
+cakeObs.observe(cakeSection);
+
+/* ═══════════════════════════════════════════════
+   FINAL REVEAL
+═══════════════════════════════════════════════ */
+const fObs=new IntersectionObserver(es=>{
+  if(es[0].isIntersecting){$('finalMsg').classList.add('visible');fObs.disconnect()}
+},{threshold:.25});
+fObs.observe($('final'));
+
+/* ═══════════════════════════════════════════════
+   INIT — fetch config, then boot everything
+═══════════════════════════════════════════════ */
+async function init(){
+  // Try to load config from server
+  try{
+    const cfg=await fetch('/api/config').then(r=>r.json());
+    Object.assign(S,cfg);
+  }catch{/* offline / static — use defaults */}
+
+  // Apply personalisation
+  const {recipient:n,age:a,sender,letterText}=S;
+  document.title=`Happy ${a}th Birthday, ${n}! ♡`;
+  $('heroTitle').textContent=`For Your ${a}th Birthday`;
+  $('heroTitle').dataset.text=`For Your ${a}th Birthday`;
+  $('heroSub').innerHTML=`Every memory we've made, every laugh we've shared —<br/>gathered here, just for you, ${esc(n)}.`;
+  $('ltrDear').textContent=`My Dearest ${esc(n)},`;
+  $('finalTitle').textContent='Happy Birthday';
+  $('finalSign').textContent=sender?`Forever yours, ${esc(sender)} ♡`:'Forever yours ♡';
+  $('cakeTtl').textContent=`Happy ${a}th!`;
+  if(letterText) S.letterText=letterText;
+
+  // Boot subsystems
+  initBook(n,a);
+  loadMemories();
+}
+
+init();
+</script>
+</body>
+</html>
