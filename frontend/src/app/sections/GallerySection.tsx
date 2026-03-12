@@ -5,6 +5,7 @@
  */
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { apiUrl } from '../utils/api';
 
 interface Slot { slot_key:string; photo_name:string|null; caption:string }
 
@@ -37,7 +38,7 @@ export function GallerySection() {
   const [lightbox, setLightbox]= useState<Slot|null>(null);
 
   useEffect(() => {
-    fetch('/api/album').then(r=>r.json()).then(setSlots).catch(()=>{});
+    fetch(apiUrl('/api/album')).then(r=>r.json()).then(setSlots).catch(()=>{});
   }, []);
 
   const real  = slots.filter(s => s.photo_name);

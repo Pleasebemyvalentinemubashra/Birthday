@@ -7,6 +7,7 @@
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { apiUrl } from '../utils/api';
 
 const ROSE  = '#e89ab3';
 const PAPER = '#fdf5e9';
@@ -70,7 +71,7 @@ export function LetterSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(()=>{
-    fetch('/api/letter').then(r=>r.json()).then(setData).catch(()=>{});
+    fetch(apiUrl('/api/letter')).then(r=>r.json()).then(setData).catch(()=>{});
   },[]);
 
   useEffect(()=>{
@@ -94,9 +95,9 @@ export function LetterSection() {
   const save = async () => {
     setSaving(true); setError('');
     try {
-      const r = await fetch('/api/letter',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ name:draftName, body:draftBody }) });
+      const r = await fetch(apiUrl('/api/letter'),{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ name:draftName, body:draftBody }) });
       if (r.status===403){ const d=await r.json(); setError(`You've already edited today. Next edit: `); setData(prev=>prev?{...prev,canEdit:false,nextEditISO:d.nextEditISO}:null); setEditing(false); }
-      else { const updated = await fetch('/api/letter').then(x=>x.json()); setData(updated); setEditing(false); }
+      else { const updated = await fetch(apiUrl('/api/letter')).then(x=>x.json()); setData(updated); setEditing(false); }
     } catch(_){ setError('Failed to save. Try again.'); }
     setSaving(false);
   };

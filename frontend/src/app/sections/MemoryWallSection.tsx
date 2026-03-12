@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { TapeDecoration } from '../components/TapeDecoration';
 import { CTAButton } from '../components/CTAButton';
+import { apiUrl } from '../utils/api';
 
 const ROSE  = '#e89ab3';
 const CREAM = '#fff6f2';
@@ -34,7 +35,7 @@ export function MemoryWallSection() {
 
   const load = useCallback(async () => {
     try {
-      const r = await fetch('/api/memories');
+      const r = await fetch(apiUrl('/api/memories'));
       setMemories(await r.json());
     } catch { /* offline */ }
     setLoading(false);
@@ -60,7 +61,7 @@ export function MemoryWallSection() {
     fd.append('author', author.trim() || 'Anonymous');
     if (file) fd.append('photo', file);
     try {
-      const r = await fetch('/api/memories', { method: 'POST', body: fd });
+      const r = await fetch(apiUrl('/api/memories'), { method: 'POST', body: fd });
       if ((await r.json()).id) {
         setTitle(''); setMessage(''); setAuthor(''); setFile(null); setPreview(null);
         setSaved(true);
@@ -197,7 +198,7 @@ function MemoryCard({ memory, rotation, index, onDelete }: { memory: Memory; rot
     if (!e.shiftKey) return;
     const key = prompt('Admin key to delete:');
     if (!key || !confirm('Delete permanently?')) return;
-    await fetch(`/api/memories/${memory.id}`, { method: 'DELETE', headers: { 'x-admin-key': key } });
+    await fetch(apiUrl(`/api/memories/${memory.id}`), { method: 'DELETE', headers: { 'x-admin-key': key } });
     onDelete();
   };
 

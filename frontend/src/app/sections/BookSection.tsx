@@ -13,6 +13,7 @@
  */
 import { useState, useRef, useCallback, useEffect, useId } from 'react';
 import { motion, useMotionValue, useTransform, animate, AnimatePresence } from 'motion/react';
+import { apiUrl } from '../utils/api';
 
 const ROSE  = '#e89ab3';
 const BLUSH = '#f7c6d9';
@@ -51,7 +52,7 @@ function PolaroidSlot({ slotKey, slot, onSaved, onDeleted }: {
     fd.append('photo', file);
     fd.append('caption', cap);
     try {
-      const r = await fetch(`/api/album/${encodeURIComponent(slotKey)}`, { method:'POST', body:fd });
+      const r = await fetch(apiUrl(`/api/album/${encodeURIComponent(slotKey)}`), { method:'POST', body:fd });
       const d = await r.json();
       if (d.ok) onSaved(slotKey, d.photoName, cap);
     } catch(_) {}
@@ -62,7 +63,7 @@ function PolaroidSlot({ slotKey, slot, onSaved, onDeleted }: {
     setCap(v);
     if (!slot) return;
     try {
-      await fetch(`/api/album/${encodeURIComponent(slotKey)}/caption`, {
+      await fetch(apiUrl(`/api/album/${encodeURIComponent(slotKey)}/caption`), {
         method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({caption:v})
       });
       onSaved(slotKey, slot.photo_name!, v);
@@ -71,7 +72,7 @@ function PolaroidSlot({ slotKey, slot, onSaved, onDeleted }: {
 
   async function del() {
     if (!confirm('Remove this photo?')) return;
-    try { await fetch(`/api/album/${encodeURIComponent(slotKey)}`, { method:'DELETE' }); onDeleted(slotKey); } catch(_){}
+    try { await fetch(apiUrl(`/api/album/${encodeURIComponent(slotKey)}`), { method:'DELETE' }); onDeleted(slotKey); } catch(_){}
   }
 
   const hasPhoto = !!slot?.photo_name;
@@ -163,13 +164,13 @@ function DiaryPage({ pi }: { pi:number }) {
   const loaded = useRef(false);
   useEffect(()=>{
     if(loaded.current) return; loaded.current=true;
-    fetch(`/api/diary/${pid}`).then(r=>r.json()).then(d=>setText(d.body||'')).catch(()=>{});
+    fetch(apiUrl(`/api/diary/${pid}`)).then(r=>r.json()).then(d=>setText(d.body||'')).catch(()=>{});
   },[pid]);
   const change=(v:string)=>{
     setText(v); setSaved(false); clearTimeout(timer.current);
     timer.current=setTimeout(async()=>{
       setSaving(true);
-      try{ await fetch(`/api/diary/${pid}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body:v})}); setSaved(true); setTimeout(()=>setSaved(false),2200); }catch(_){}
+      try{ await fetch(apiUrl(`/api/diary/${pid}`),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body:v})}); setSaved(true); setTimeout(()=>setSaved(false),2200); }catch(_){}
       setSaving(false);
     },1200);
   };
@@ -237,7 +238,7 @@ export function BookSection({ name, age }: BookProps) {
   const flipY  = useMotionValue(0); // 0 = closed, -180 = fully flipped
 
   useEffect(()=>{
-    fetch('/api/album').then(r=>r.json()).then((arr:AlbumSlot[])=>{
+    fetch(apiUrl('/api/album')).then(r=>r.json()).then((arr:AlbumSlot[])=>{
       const m:Record<string,AlbumSlot>={};
       arr.forEach(s=>{ m[s.slot_key]=s; });
       setSlots(m);

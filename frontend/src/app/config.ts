@@ -1,3 +1,5 @@
+import { apiUrl } from './utils/api';
+
 export interface SiteConfig {
   recipient:   string;
   age:         number;
@@ -16,18 +18,9 @@ export const defaultConfig: SiteConfig = {
   musicUrl:    null,
 };
 
-// Get API base URL - use environment variable or default to current origin
-const getApiBase = () => {
-  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-    return 'http://localhost:3000';
-  }
-  return import.meta.env.VITE_API_URL || window.location.origin;
-};
-
 export async function fetchConfig(): Promise<SiteConfig> {
   try {
-    const apiBase = getApiBase();
-    const r = await fetch(`${apiBase}/api/config`);
+    const r = await fetch(apiUrl('/api/config'));
     const d = await r.json();
     return { ...defaultConfig, ...d };
   } catch (_) {
