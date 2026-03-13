@@ -38,7 +38,7 @@ function Candle1({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', position:'relative' }}>
       {lit && <div style={{ position:'absolute', top:-15*scale, left:'50%', transform:'translateX(-50%)', zIndex:10 }}><Flame visible size={scale*1.2}/></div>}
-      <img src={`${import.meta.env.BASE_URL}candle_1073338.png`} alt="1" style={{ width: 90*scale, height: 'auto', display:'block' }} />
+      <img src={`${import.meta.env.BASE_URL}candle_1073338.png`} alt="1" style={{ width: 75*scale, height: 'auto', display:'block' }} />
     </div>
   );
 }
@@ -54,7 +54,7 @@ function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
 
 function Candle19({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
-    <div style={{ display:'flex', alignItems:'flex-end', gap:8*scale, position:'relative' }}>
+    <div style={{ display:'flex', alignItems:'flex-end', gap:2*scale, position:'relative' }}>
       <Candle1 lit={lit} scale={scale}/>
       <Candle9 lit={lit} scale={scale}/>
     </div>
@@ -345,7 +345,7 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
           {(phase === 'landing' || phase === 'landed') && (
             <motion.div style={{ position:'absolute', left:'50%', zIndex:10, display:'flex', justifyContent:'center' }}
               initial={{ y:-180, x:'-50%' }}
-              animate={{ y:-80, x:'-50%' }}
+              animate={{ y:-40, x:'-50%' }}
               transition={{ duration:1.1, ease:[.22,1,.36,1] }}>
               <motion.div className="scale-[0.7] sm:scale-[0.85] md:scale-100"
                 animate={phase==='landed' ? { x:[0,-12,12,-12,12,-12,0] } : {}}
