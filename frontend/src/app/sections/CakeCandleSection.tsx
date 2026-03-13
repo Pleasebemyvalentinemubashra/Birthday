@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState } from 'react';
+import { motion } from 'motion/react';
 
 const ROSE  = '#e89ab3';
 
@@ -30,34 +30,6 @@ function Flame({ visible, size = 1 }: { visible: boolean; size?: number }) {
         style={{ transformOrigin:'7px 18px' }}
       />
     </svg>
-  );
-}
-
-/* ─── Image-based Candles ─────────────────────────── */
-function Candle1({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
-  return (
-    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', position:'relative' }}>
-      {lit && <div style={{ position:'absolute', top:-15*scale, left:'50%', transform:'translateX(-50%)', zIndex:10 }}><Flame visible size={scale*1.2}/></div>}
-      <img src={`${import.meta.env.BASE_URL}candle_1073338.png`} alt="1" style={{ width: 75*scale, height: 'auto', display:'block' }} />
-    </div>
-  );
-}
-
-function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
-  return (
-    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', position:'relative' }}>
-      {lit && <div style={{ position:'absolute', top:-15*scale, left:'50%', transform:'translateX(-50%)', zIndex:10 }}><Flame visible size={scale*1.2}/></div>}
-      <img src={`${import.meta.env.BASE_URL}candle_8128768.png`} alt="9" style={{ width: 90*scale, height: 'auto', display:'block' }} />
-    </div>
-  );
-}
-
-function Candle19({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
-  return (
-    <div style={{ display:'flex', alignItems:'center', gap:-300*scale, position:'relative' }}>
-      <Candle1 lit={lit} scale={scale}/>
-      <Candle9 lit={lit} scale={scale}/>
-    </div>
   );
 }
 
@@ -144,247 +116,100 @@ function BirthdayCake() {
   );
 }
 
-/* ─── Spark particle ─────────────────────────────── */
-function Spark({ x,y,color,angle,dist }: { x:number;y:number;color:string;angle:number;dist:number }) {
-  return (
-    <motion.div style={{ position:'absolute', left:x, top:y, width:6, height:6, borderRadius:'50%', background:color }}
-      initial={{ opacity:1, x:0, y:0, scale:1 }}
-      animate={{ opacity:0, x:Math.cos(angle)*dist, y:-Math.abs(Math.sin(angle))*dist-20, scale:0 }}
-      transition={{ duration:.8+Math.random()*.7, ease:'easeOut', delay:Math.random()*.4 }}
-    />
-  );
-}
-
-const SPARK_COLORS = ['#f4c2c2','#d4688e','#f9d8bc','#e898b8','#fff0c0','#f8c8e8','#d9c6f7'];
-type Phase = 'traveling'|'merging'|'merged'|'landing'|'landed';
-
 interface CakeCandleSectionProps { age: number; recipient?: string }
 
 export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSectionProps) {
-  const cakeRef    = useRef<HTMLDivElement>(null);
-  const phaseRef   = useRef<Phase>('traveling');
-  const rafRef     = useRef<number>();
-  const [phase,    setPhase]   = useState<Phase>('traveling');
-  const [c1y,      setC1y]     = useState(0);  // 0→1 = 8vh→44vh
-  const [sparks,   setSparks]  = useState<{ id:number;x:number;y:number;color:string;angle:number;dist:number }[]>([]);
-  const [showMsg,  setShowMsg] = useState(false);
-
-  const advance = useCallback((next: Phase) => {
-    phaseRef.current = next; setPhase(next);
-  }, []);
-
-  useEffect(() => {
-    let smooth = window.scrollY, target = window.scrollY;
-    const onScroll = () => { target = window.scrollY; };
-    window.addEventListener('scroll', onScroll, { passive:true });
-
-    const tick = () => {
-      smooth += (target - smooth) * 0.07;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? smooth/max : 0;
-
-      if (phaseRef.current === 'traveling') {
-        setC1y(Math.min(1, pct/0.5));
-        if (cakeRef.current) {
-          const r = cakeRef.current.getBoundingClientRect();
-          if (r.top < window.innerHeight*2) advance('merging');
-        }
-      }
-      if (phaseRef.current === 'merged' && cakeRef.current) {
-        if (cakeRef.current.getBoundingClientRect().top < window.innerHeight*0.5) advance('landing');
-      }
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(rafRef.current!); };
-  }, [advance]);
-
-  useEffect(() => {
-    if (phase !== 'merging') return;
-    // After merge animation completes, switch to merged
-    const t = setTimeout(() => advance('merged'), 2100);
-    return () => clearTimeout(t);
-  }, [phase, advance]);
-
-  useEffect(() => {
-    if (phase !== 'landing') return;
-    const t = setTimeout(() => {
-      advance('landed');
-      setTimeout(() => {
-        setSparks(Array.from({ length:55 }, (_,i) => ({
-          id:i, x:100+Math.random()*140, y:20+Math.random()*50,
-          color:SPARK_COLORS[~~(Math.random()*SPARK_COLORS.length)],
-          angle:Math.random()*Math.PI*2, dist:60+Math.random()*80,
-        })));
-        setTimeout(() => setShowMsg(true), 500);
-      }, 400);
-    }, 1000);
-    return () => clearTimeout(t);
-  }, [phase, advance]);
-
-  // Fallback: if user jumped straight here
-  useEffect(() => {
-    if (phase === 'traveling' && cakeRef.current) {
-      const r = cakeRef.current.getBoundingClientRect();
-      if (r.top < window.innerHeight*0.65) advance('landing');
-    }
-  });
-
-  const c1TopVh = 8 + c1y * 36;
+  const [isLit, setIsLit] = useState(false);
 
   return (
-    <section id="cake" className="min-h-screen flex flex-col items-center py-4 sm:py-6 md:py-8 px-4 relative overflow-hidden"
+    <section id="cake" className="min-h-screen flex flex-col items-center justify-center py-8 px-4 relative overflow-hidden"
       style={{ background:'radial-gradient(ellipse 90% 70% at 50% 100%,#ffe0e8 0%,transparent 55%),radial-gradient(ellipse 80% 50% at 0% 30%,#fde8d8 0%,transparent 50%),#f7ede0' }}>
 
-      {/* ── Traveling "1" ── */}
-      {phase === 'traveling' && (
-        <div style={{ position:'fixed', right:'min(18%, 70px)', top:`${c1TopVh}vh`, pointerEvents:'none', zIndex:500 }}>
-          <div className="scale-[0.6] sm:scale-75 md:scale-100">
-            <Candle1 scale={1}/>
-          </div>
-        </div>
-      )}
+      {/* Section title */}
+      <motion.div className="text-center mb-8"
+        initial={{ opacity:0, y:20 }} 
+        whileInView={{ opacity:1, y:0 }} 
+        viewport={{ once:true }}>
+        <p className="text-xs sm:text-sm tracking-[.2em] uppercase mb-2" style={{ fontFamily:'var(--font-serif)', color:ROSE }}>Make a Wish</p>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl" style={{ fontFamily:'var(--font-handwritten)', color:ROSE }}>Happy {age}th!</h2>
+      </motion.div>
 
-      {/* ── Merge animation - smooth and beautiful ── */}
-      <AnimatePresence>
-        {phase === 'merging' && (
-          <>
-            {/* "1" candle glides smoothly from right to center */}
-            <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ right:'min(18%, 70px)', top:'44vh' }}
-              animate={{ 
-                left:'46%',
-                top:'44vh'
-              }}
-              transition={{ duration:1.4, ease:[0.33, 1, 0.68, 1] }}>
-              <div className="scale-[0.6] sm:scale-75 md:scale-100">
-                <Candle1 scale={1}/>
+      {/* Cake with candle */}
+      <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px]">
+        {/* Candle on top - clickable */}
+        <motion.div 
+          className="absolute left-1/2 -translate-x-1/2 cursor-pointer"
+          style={{ top: '-60px', zIndex: 10 }}
+          onClick={() => setIsLit(!isLit)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity:0, y:-20 }}
+          animate={{ opacity:1, y:0 }}
+          transition={{ delay:0.5, duration:0.6 }}>
+          
+          {/* Flames on top when lit */}
+          {isLit && (
+            <>
+              <div style={{ position:'absolute', top:-15, left:'35%', transform:'translateX(-50%)', zIndex:10 }}>
+                <Flame visible size={1.3}/>
               </div>
-            </motion.div>
-            
-            {/* "9" candle glides smoothly from left to center */}
-            <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ left:'min(18%, 70px)', top:'44vh', opacity:0 }}
-              animate={{ 
-                left:'54%',
-                top:'44vh',
-                opacity:1
-              }}
-              transition={{ duration:1.4, ease:[0.33, 1, 0.68, 1] }}>
-              <div className="scale-[0.6] sm:scale-75 md:scale-100">
-                <Candle9 scale={1}/>
+              <div style={{ position:'absolute', top:-15, left:'65%', transform:'translateX(-50%)', zIndex:10 }}>
+                <Flame visible size={1.3}/>
               </div>
-            </motion.div>
-            
-            {/* Gentle glow effect during merge */}
-            <motion.div style={{ position:'fixed', zIndex:499, pointerEvents:'none', left:'50%', top:'44vh', transform:'translate(-50%, -50%)' }}
-              initial={{ opacity:0, scale:0 }}
-              animate={{ 
-                opacity:[0,0.4,0.6,0.4,0],
-                scale:[0,1.2,1.8,2.2,2.8]
-              }}
-              transition={{ duration:1.4, delay:0.7, times:[0,.3,.5,.7,1], ease:'easeOut' }}>
-              <div style={{ 
-                width:180, 
-                height:180, 
-                borderRadius:'50%', 
-                background:'radial-gradient(circle, rgba(255,230,200,0.35) 0%, rgba(248,200,232,0.15) 40%, transparent 70%)',
-                filter:'blur(25px)'
-              }}/>
-            </motion.div>
-            
-            {/* Combined "19" fades in smoothly at center */}
-            <motion.div style={{ position:'fixed', zIndex:501, pointerEvents:'none', left:'50%', top:'44vh', transform:'translateX(-50%)' }}
-              initial={{ opacity:0, scale:0.85 }}
-              animate={{ 
-                opacity:1,
-                scale:1
-              }}
-              transition={{ 
-                duration:0.7, 
-                delay:1.4,
-                ease:[0.33, 1, 0.68, 1]
-              }}>
-              <div className="scale-[0.6] sm:scale-75 md:scale-100">
-                <Candle19 scale={1}/>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* ── Merged traveling ── */}
-      {phase === 'merged' && (
-        <div style={{ position:'fixed', top:'44vh', left:'50%', transform:'translateX(-50%)', pointerEvents:'none', zIndex:500 }}>
-          <div className="scale-[0.6] sm:scale-75 md:scale-100">
-            <Candle19 scale={1}/>
-          </div>
-        </div>
-      )}
-
-      {/* Section title - ABSOLUTE TOP with conditional visibility */}
-      <AnimatePresence>
-        {(phase === 'traveling' || phase === 'merged' || phase === 'landing' || phase === 'landed') && (
-          <motion.div className="text-center mb-0 mt-2 sm:mt-4"
-            initial={{ opacity:0, y:20 }} 
-            animate={{ opacity:1, y:0 }}
-            exit={{ opacity:0, y:-20 }}
-            transition={{ duration:0.5 }}>
-            <p className="text-[9px] sm:text-[10px] md:text-xs tracking-[.2em] uppercase mb-1" style={{ fontFamily:'var(--font-serif)', color:ROSE }}>Make a Wish</p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl" style={{ fontFamily:'var(--font-handwritten)', color:ROSE }}>Happy {age}th!</h2>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* MASSIVE SPACER TO COMPLETELY PREVENT OVERLAP */}
-      <div className="flex-1 min-h-[280px] sm:min-h-[340px] md:min-h-[400px]" />
-
-      {/* Cake stage - PUSHED WAY DOWN */}
-      <div ref={cakeRef} className="relative w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] px-4">
-        <AnimatePresence>
-          {(phase === 'landing' || phase === 'landed') && (
-            <motion.div style={{ position:'absolute', left:'50%', zIndex:10, display:'flex', justifyContent:'center' }}
-              initial={{ y:-180, x:'-50%' }}
-              animate={{ y:-20, x:'-50%' }}
-              transition={{ duration:1.1, ease:[.22,1,.36,1] }}>
-              <motion.div className="scale-[0.7] sm:scale-[0.85] md:scale-100"
-                animate={phase==='landed' ? { x:[0,-12,12,-12,12,-12,0] } : {}}
-                transition={{ duration:1, delay:.25 }}>
-                <Candle19 lit={phase==='landed'} scale={1}/>
-              </motion.div>
-            </motion.div>
+            </>
           )}
-        </AnimatePresence>
+          
+          {/* 19 Candle Image with background removed */}
+          <img 
+            src={`${import.meta.env.BASE_URL}Untitled design (1).png`} 
+            alt="19" 
+            className="w-32 sm:w-40 md:w-48"
+            style={{ 
+              display:'block',
+              mixBlendMode: 'multiply',
+              filter: 'brightness(1.1) contrast(1.05)'
+            }} 
+          />
+        </motion.div>
 
-        <div style={{ position:'relative', zIndex:4 }}><BirthdayCake/></div>
+        {/* Cake */}
+        <motion.div 
+          initial={{ opacity:0, scale:0.9 }}
+          animate={{ opacity:1, scale:1 }}
+          transition={{ delay:0.3, duration:0.6 }}>
+          <BirthdayCake/>
+        </motion.div>
 
-        {/* Glow flash on landing */}
-        {phase === 'landed' && (
-          <motion.div style={{ position:'fixed', inset:0, background:'radial-gradient(circle,rgba(248,200,180,.32) 0%,transparent 70%)', pointerEvents:'none', zIndex:400 }}
-            initial={{ opacity:0 }} animate={{ opacity:[0,1,0] }} transition={{ duration:1.4 }}/>
+        {/* Glow flash when lit */}
+        {isLit && (
+          <motion.div 
+            style={{ 
+              position:'absolute', 
+              inset:0, 
+              background:'radial-gradient(circle at 50% 0%, rgba(255,220,180,.4) 0%, transparent 60%)', 
+              pointerEvents:'none', 
+              zIndex:5 
+            }}
+            initial={{ opacity:0 }} 
+            animate={{ opacity:[0,1,0.6] }} 
+            transition={{ duration:1 }}/>
         )}
 
-        {/* Sparkles */}
-        <div style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:5 }}>
-          {sparks.map(s => <Spark key={s.id} {...s}/>)}
-        </div>
-
-        <AnimatePresence>
-          {showMsg && (
-            <motion.div className="text-center mt-4 sm:mt-6 md:mt-8 px-2 sm:px-4"
-              initial={{ opacity:0, scale:.8 }} animate={{ opacity:1, scale:1 }}
-              transition={{ duration:.8, ease:[.34,1.56,.64,1] }}>
-              <p className="text-3xl sm:text-4xl md:text-5xl mb-1 sm:mb-2"
-                style={{ fontFamily:'var(--font-handwritten)', color:ROSE, textShadow:'0 2px 20px rgba(180,80,100,.3)' }}>
-                Happy Birthday! ♡
-              </p>
-              <p className="text-2xl sm:text-3xl md:text-4xl"
-                style={{ fontFamily:'var(--font-handwritten)', color:ROSE, textShadow:'0 2px 20px rgba(180,80,100,.3)' }}>
-                {recipient}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Birthday message */}
+        <motion.div 
+          className="text-center mt-8 px-4"
+          initial={{ opacity:0, y:20 }}
+          animate={{ opacity:1, y:0 }}
+          transition={{ delay:0.8, duration:0.6 }}>
+          <p className="text-4xl sm:text-5xl md:text-6xl mb-2"
+            style={{ fontFamily:'var(--font-handwritten)', color:ROSE, textShadow:'0 2px 20px rgba(180,80,100,.3)' }}>
+            Happy Birthday! ♡
+          </p>
+          <p className="text-3xl sm:text-4xl md:text-5xl"
+            style={{ fontFamily:'var(--font-handwritten)', color:ROSE, textShadow:'0 2px 20px rgba(180,80,100,.3)' }}>
+            {recipient}
+          </p>
+        </motion.div>
       </div>
     </section>
   );
