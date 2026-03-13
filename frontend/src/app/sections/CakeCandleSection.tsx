@@ -126,7 +126,7 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
       style={{ background:'radial-gradient(ellipse 90% 70% at 50% 100%,#ffe0e8 0%,transparent 55%),radial-gradient(ellipse 80% 50% at 0% 30%,#fde8d8 0%,transparent 50%),#f7ede0' }}>
 
       {/* Section title */}
-      <motion.div className="text-center mb-8"
+      <motion.div className="text-center mb-12 sm:mb-16 md:mb-20"
         initial={{ opacity:0, y:20 }} 
         whileInView={{ opacity:1, y:0 }} 
         viewport={{ once:true }}>
