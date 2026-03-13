@@ -9,7 +9,9 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 const DEV  = process.env.NODE_ENV !== 'production';
 
-const UPLOADS_DIR  = path.join(__dirname, 'uploads');
+const UPLOADS_DIR  = process.env.NODE_ENV === 'production' 
+  ? '/app/uploads' 
+  : path.join(__dirname, 'uploads');
 const FRONTEND_DIR = path.join(__dirname, 'frontend', 'dist');
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
@@ -23,7 +25,10 @@ app.use((req, res, next) => {
 });
 
 // ── DATABASE ──────────────────────────────────────
-const db = new Database(path.join(__dirname, 'memories.db'));
+const DB_PATH = process.env.NODE_ENV === 'production'
+  ? '/app/uploads/memories.db'
+  : path.join(__dirname, 'memories.db');
+const db = new Database(DB_PATH);
 db.pragma('journal_mode = WAL');
 db.exec(`
   CREATE TABLE IF NOT EXISTS album_slots (
