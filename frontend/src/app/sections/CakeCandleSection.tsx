@@ -161,13 +161,11 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
           
           {/* 19 Candle Image with background removed */}
           <img 
-            src={`${import.meta.env.BASE_URL}Untitled design (1).png`} 
+            src={`${import.meta.env.BASE_URL}Untitled_design-removebg-preview.png`} 
             alt="19" 
             className="w-32 sm:w-40 md:w-48"
             style={{ 
-              display:'block',
-              mixBlendMode: 'multiply',
-              filter: 'brightness(1.1) contrast(1.05)'
+              display:'block'
             }} 
           />
         </motion.div>
