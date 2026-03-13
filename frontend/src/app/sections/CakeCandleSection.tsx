@@ -118,7 +118,7 @@ function BirthdayCake() {
 
 interface CakeCandleSectionProps { age: number; recipient?: string }
 
-export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSectionProps) {
+export function CakeCandleSection({ age, recipient = 'Mubashra' }: CakeCandleSectionProps) {
   const [isLit, setIsLit] = useState(false);
 
   return (
