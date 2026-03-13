@@ -54,7 +54,7 @@ function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
 
 function Candle19({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
-    <div style={{ display:'flex', alignItems:'flex-end', gap:0, position:'relative', marginLeft: -5*scale }}>
+    <div style={{ display:'flex', alignItems:'flex-end', gap:0, position:'relative', marginLeft: -15*scale }}>
       <Candle1 lit={lit} scale={scale}/>
       <Candle9 lit={lit} scale={scale}/>
     </div>
