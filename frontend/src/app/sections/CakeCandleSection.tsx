@@ -62,10 +62,10 @@ function Candle1({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   );
 }
 
-/* ─── Candle "9" — proper curved 9 shape ──────────
-   The "9" is drawn as a beautiful curved numeral:
-     • A circular loop at the top (the head of the 9)
-     • A graceful curved tail descending from the loop
+/* ─── Candle "9" — Beautiful 9-shaped candle ──────
+   A proper numeral 9 with:
+     • Round head (circle at top)
+     • Curved descending tail
 ────────────────────────────────────────────────── */
 function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
@@ -79,28 +79,48 @@ function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
             <stop offset="100%" stopColor="#b87020"/>
           </linearGradient>
         </defs>
-        {/* Wick — sits above the loop */}
+        {/* Wick */}
         <rect x="27" y="2" width="2" height="10" rx="1" fill="#554433"/>
         
-        {/* Main 9 shape - circular head with curved tail */}
-        <g>
-          {/* Outer circle of the 9's head */}
-          <circle cx="28" cy="34" r="22" fill="url(#cg9)"/>
-          {/* Inner circle to create the donut hole */}
-          <circle cx="28" cy="34" r="13" fill="#f7ede0"/>
-          
-          {/* Curved tail of the 9 */}
-          <path d="M 40 50 Q 45 70, 42 90 Q 40 110, 35 120 L 35 134 Q 35 136, 33 136 L 25 136 Q 23 136, 23 134 L 23 120 Q 18 110, 16 90 Q 14 70, 20 52 Q 24 45, 28 45 Q 32 45, 36 48 Z" 
-                fill="url(#cg9)"/>
-        </g>
+        {/* The "9" shape - using path for smooth curves */}
+        <path d="
+          M 28 14
+          C 40 14, 50 24, 50 36
+          C 50 48, 40 58, 28 58
+          C 16 58, 6 48, 6 36
+          C 6 24, 16 14, 28 14
+          Z
+          M 28 24
+          C 22 24, 17 29, 17 36
+          C 17 43, 22 48, 28 48
+          C 34 48, 39 43, 39 36
+          C 39 29, 34 24, 28 24
+          Z
+          M 39 48
+          C 41 50, 43 54, 43 58
+          L 43 120
+          C 43 124, 40 128, 36 130
+          C 34 131, 32 132, 30 132
+          L 30 134
+          L 46 134
+          L 46 148
+          L 10 148
+          L 10 134
+          L 26 134
+          L 26 132
+          C 24 132, 22 131, 20 130
+          C 16 128, 13 124, 13 120
+          L 13 58
+          C 13 54, 15 50, 17 48
+          C 20 45, 24 44, 28 44
+          C 32 44, 35 45, 39 48
+          Z
+        " fill="url(#cg9)"/>
         
-        {/* Bottom serif platform */}
-        <rect x="5" y="134" width="46" height="14" rx="3" fill="url(#cg9)"/>
-        
-        {/* Sheens for 3D effect */}
-        <ellipse cx="22" cy="30" rx="6" ry="8" fill="rgba(255,255,255,.28)" opacity=".8"/>
-        <rect x="30" y="55" width="4" height="70" rx="2" fill="rgba(255,255,255,.22)"/>
-        <rect x="8" y="136" width="8" height="8" rx="2" fill="rgba(255,255,255,.18)"/>
+        {/* Sheen highlights */}
+        <ellipse cx="22" cy="32" rx="5" ry="7" fill="rgba(255,255,255,.3)"/>
+        <rect x="30" y="60" width="3" height="60" rx="1.5" fill="rgba(255,255,255,.2)"/>
+        <rect x="12" y="136" width="8" height="8" rx="2" fill="rgba(255,255,255,.18)"/>
       </svg>
     </div>
   );
@@ -288,13 +308,13 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
   const c1TopVh = 8 + c1y * 36;
 
   return (
-    <section id="cake" className="min-h-screen flex flex-col items-center justify-center py-12 md:py-20 px-4 relative overflow-hidden"
+    <section id="cake" className="min-h-screen flex flex-col items-center justify-start py-8 md:py-12 px-4 relative overflow-hidden"
       style={{ background:'radial-gradient(ellipse 90% 70% at 50% 100%,#ffe0e8 0%,transparent 55%),radial-gradient(ellipse 80% 50% at 0% 30%,#fde8d8 0%,transparent 50%),#f7ede0' }}>
 
       {/* ── Traveling "1" ── */}
       {phase === 'traveling' && (
-        <div style={{ position:'fixed', right:'22%', top:`${c1TopVh}vh`, pointerEvents:'none', zIndex:500 }}>
-          <div className="scale-50 md:scale-75">
+        <div style={{ position:'fixed', right:'min(22%, 80px)', top:`${c1TopVh}vh`, pointerEvents:'none', zIndex:500 }}>
+          <div className="scale-[0.4] sm:scale-50 md:scale-75">
             <Candle1 scale={.75}/>
           </div>
         </div>
@@ -306,28 +326,28 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
           <>
             {/* "1" candle glides from right */}
             <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ right:'22%', top:'44vh', opacity:1, scale:1 }}
+              initial={{ right:'min(22%, 80px)', top:'44vh', opacity:1, scale:1 }}
               animate={{ 
                 right:'45%', 
                 opacity:[1,1,1,0],
                 scale:[1,1.05,1,0.9]
               }}
               transition={{ duration:1.2, delay:.2, times:[0,.3,.7,1], ease:[0.34, 1.56, 0.64, 1] }}>
-              <div className="scale-50 md:scale-75">
+              <div className="scale-[0.4] sm:scale-50 md:scale-75">
                 <Candle1 scale={.75}/>
               </div>
             </motion.div>
             
             {/* "9" candle glides from left */}
             <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ left:'24%', top:'44vh', opacity:0, scale:0.8 }}
+              initial={{ left:'min(24%, 80px)', top:'44vh', opacity:0, scale:0.8 }}
               animate={{ 
                 left:'35%', 
                 opacity:[0,1,1,1,0],
                 scale:[0.8,1,1.05,1,0.9]
               }}
               transition={{ duration:1.3, times:[0,.2,.5,.8,1], ease:[0.34, 1.56, 0.64, 1] }}>
-              <div className="scale-50 md:scale-75">
+              <div className="scale-[0.4] sm:scale-50 md:scale-75">
                 <Candle9 scale={.75}/>
               </div>
             </motion.div>
@@ -348,7 +368,7 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
                 stiffness: 200,
                 damping: 15
               }}>
-              <div className="scale-50 md:scale-75">
+              <div className="scale-[0.4] sm:scale-50 md:scale-75">
                 <Candle19 scale={.75}/>
               </div>
             </motion.div>
@@ -359,28 +379,28 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
       {/* ── Merged traveling ── */}
       {phase === 'merged' && (
         <div style={{ position:'fixed', top:'44vh', left:'50%', transform:'translateX(-50%)', pointerEvents:'none', zIndex:500 }}>
-          <div className="scale-50 md:scale-75">
+          <div className="scale-[0.4] sm:scale-50 md:scale-75">
             <Candle19 scale={.75}/>
           </div>
         </div>
       )}
 
-      {/* Section title - moved higher to prevent overlap */}
-      <motion.div className="text-center mb-20 md:mb-24"
+      {/* Section title - moved to top with more space */}
+      <motion.div className="text-center mb-8 sm:mb-12 md:mb-16 mt-4 sm:mt-8"
         initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
-        <p className="text-xs md:text-sm tracking-[.2em] uppercase mb-2" style={{ fontFamily:'var(--font-serif)', color:ROSE }}>Make a Wish</p>
-        <h2 className="text-4xl md:text-5xl" style={{ fontFamily:'var(--font-handwritten)', color:ROSE }}>Happy {age}th!</h2>
+        <p className="text-[10px] sm:text-xs md:text-sm tracking-[.2em] uppercase mb-1 sm:mb-2" style={{ fontFamily:'var(--font-serif)', color:ROSE }}>Make a Wish</p>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl" style={{ fontFamily:'var(--font-handwritten)', color:ROSE }}>Happy {age}th!</h2>
       </motion.div>
 
-      {/* Cake stage */}
-      <div ref={cakeRef} className="relative w-full max-w-[340px] px-4">
+      {/* Cake stage - with more top margin */}
+      <div ref={cakeRef} className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[340px] px-4 mt-12 sm:mt-16 md:mt-20">
         <AnimatePresence>
           {(phase === 'landing' || phase === 'landed') && (
             <motion.div style={{ position:'absolute', left:'50%', zIndex:10, display:'flex', justifyContent:'center' }}
               initial={{ y:-170, x:'-50%' }}
-              animate={{ y:-82, x:'-50%' }}
+              animate={{ y:-90, x:'-50%' }}
               transition={{ duration:1.1, ease:[.22,1,.36,1] }}>
-              <motion.div className="scale-75 md:scale-100"
+              <motion.div className="scale-[0.6] sm:scale-75 md:scale-100"
                 animate={phase==='landed' ? { x:[0,-14,14,-14,14,-14,0] } : {}}
                 transition={{ duration:1, delay:.25 }}>
                 <Candle19 lit={phase==='landed'} scale={.82}/>
@@ -404,14 +424,14 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
 
         <AnimatePresence>
           {showMsg && (
-            <motion.div className="text-center mt-6 md:mt-8 px-4"
+            <motion.div className="text-center mt-4 sm:mt-6 md:mt-8 px-2 sm:px-4"
               initial={{ opacity:0, scale:.8 }} animate={{ opacity:1, scale:1 }}
               transition={{ duration:.8, ease:[.34,1.56,.64,1] }}>
-              <p className="text-4xl md:text-5xl mb-2"
+              <p className="text-3xl sm:text-4xl md:text-5xl mb-1 sm:mb-2"
                 style={{ fontFamily:'var(--font-handwritten)', color:ROSE, textShadow:'0 2px 20px rgba(180,80,100,.3)' }}>
                 Happy Birthday! ♡
               </p>
-              <p className="text-3xl md:text-4xl"
+              <p className="text-2xl sm:text-3xl md:text-4xl"
                 style={{ fontFamily:'var(--font-handwritten)', color:ROSE, textShadow:'0 2px 20px rgba(180,80,100,.3)' }}>
                 {recipient}
               </p>
