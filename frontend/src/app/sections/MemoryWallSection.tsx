@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { TapeDecoration } from '../components/TapeDecoration';
 import { CTAButton } from '../components/CTAButton';
-import { apiUrl } from '../utils/api';
+import { apiUrl, getApiBase } from '../utils/api';
 
 const ROSE  = '#e89ab3';
 const CREAM = '#fff6f2';
@@ -216,7 +216,7 @@ function MemoryCard({ memory, rotation, index, onDelete }: { memory: Memory; rot
       <div className="bg-white p-2.5 pb-10 shadow-xl relative">
         <TapeDecoration className="-top-2 left-1/2 -translate-x-1/2" rotation={-6} />
         {memory.photo_name
-          ? <img src={`/uploads/${memory.photo_name}`} alt={memory.title} className="w-full object-cover" style={{ height: 160 }} loading="lazy" />
+          ? <img src={`${getApiBase()}/uploads/${memory.photo_name}`} alt={memory.title} className="w-full object-cover" style={{ height: 160 }} loading="lazy" />
           : <div className="w-full flex items-center justify-center text-4xl" style={{ height: 160, background: 'linear-gradient(135deg,#fce4ef,#f8c0d0)' }}>✿</div>
         }
         <div className="absolute bottom-2 left-2 right-2 text-center">

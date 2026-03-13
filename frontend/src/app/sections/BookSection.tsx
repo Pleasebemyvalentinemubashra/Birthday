@@ -13,7 +13,7 @@
  */
 import { useState, useRef, useCallback, useEffect, useId } from 'react';
 import { motion, useMotionValue, useTransform, animate, AnimatePresence } from 'motion/react';
-import { apiUrl } from '../utils/api';
+import { apiUrl, getApiBase } from '../utils/api';
 
 const ROSE  = '#e89ab3';
 const BLUSH = '#f7c6d9';
@@ -94,7 +94,7 @@ function PolaroidSlot({ slotKey, slot, onSaved, onDeleted }: {
         <div style={{ background:'#fff', padding:'5px 5px 0', boxShadow:hasPhoto?'3px 6px 22px rgba(80,30,40,.2)':'1px 3px 10px rgba(0,0,0,.07)', transition:'box-shadow .3s' }}>
           {hasPhoto ? (
             <div style={{ position:'relative', overflow:'hidden' }}>
-              <img src={`/uploads/${slot!.photo_name}`} alt={cap} loading="lazy"
+              <img src={`${getApiBase()}/uploads/${slot!.photo_name}`} alt={cap} loading="lazy"
                 style={{ display:'block', width:'100%', height:88, objectFit:'cover', transition:'filter .3s' }}/>
               {/* hover overlay — "replace" */}
               <motion.div style={{ position:'absolute', inset:0, background:'rgba(50,10,20,.48)', display:'flex', alignItems:'center', justifyContent:'center', opacity:0 }}

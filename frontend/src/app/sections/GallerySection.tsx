@@ -5,7 +5,7 @@
  */
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { apiUrl } from '../utils/api';
+import { apiUrl, getApiBase } from '../utils/api';
 
 interface Slot { slot_key:string; photo_name:string|null; caption:string }
 
@@ -94,7 +94,7 @@ export function GallerySection() {
                   <div style={{ position:'absolute', top:-9, left:'50%', transform:`translateX(-50%) rotate(${-7+(i%3)*5}deg)`, width:52, height:18, background:['rgba(255,255,255,.52)','rgba(247,198,217,.5)','rgba(217,198,247,.5)'][i%3], border:'1px solid rgba(255,255,255,.7)', backdropFilter:'blur(2px)' }}/>
                   {/* image */}
                   {!isPlaceholder && slot.photo_name ? (
-                    <img src={`/uploads/${slot.photo_name}`} alt={slot.caption} loading="lazy"
+                    <img src={`${getApiBase()}/uploads/${slot.photo_name}`} alt={slot.caption} loading="lazy"
                       style={{ display:'block', width:'100%', height: i%7===0?210:160, objectFit:'cover' }}/>
                   ) : (
                     <div style={{ width:'100%', height:i%7===0?210:160, background:isPlaceholder?'linear-gradient(135deg,rgba(247,198,217,.25),rgba(253,245,233,.8))':'linear-gradient(135deg,#fce4ef,#f8c0d4)',
@@ -132,7 +132,7 @@ export function GallerySection() {
 
       <AnimatePresence>
         {lightbox && lightbox.photo_name && (
-          <Lightbox src={`/uploads/${lightbox.photo_name}`} caption={lightbox.caption} onClose={()=>setLightbox(null)}/>
+          <Lightbox src={`${getApiBase()}/uploads/${lightbox.photo_name}`} caption={lightbox.caption} onClose={()=>setLightbox(null)}/>
         )}
       </AnimatePresence>
     </section>
