@@ -62,16 +62,14 @@ function Candle1({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   );
 }
 
-/* ─── Candle "9" — Beautiful 9-shaped candle ──────
-   A proper numeral 9 with:
-     • Round head (circle at top)
-     • Curved descending tail
+/* ─── Candle "9" — TRUE 9-shaped numeral candle ───
+   A real "9" digit with proper curves
 ────────────────────────────────────────────────── */
 function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
       {lit && <div style={{ marginBottom:-6 }}><Flame visible size={scale}/></div>}
-      <svg width={56*scale} height={148*scale} viewBox="0 0 56 148" overflow="visible">
+      <svg width={50*scale} height={148*scale} viewBox="0 0 50 148" overflow="visible">
         <defs>
           <linearGradient id="cg9" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%"   stopColor="#d89030"/>
@@ -80,47 +78,43 @@ function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
           </linearGradient>
         </defs>
         {/* Wick */}
-        <rect x="27" y="2" width="2" height="10" rx="1" fill="#554433"/>
+        <rect x="24" y="2" width="2" height="8" rx="1" fill="#554433"/>
         
-        {/* The "9" shape - using path for smooth curves */}
+        {/* The "9" - drawn as a proper numeral */}
+        {/* Outer shape of 9 */}
         <path d="
-          M 28 14
-          C 40 14, 50 24, 50 36
-          C 50 48, 40 58, 28 58
-          C 16 58, 6 48, 6 36
-          C 6 24, 16 14, 28 14
-          Z
-          M 28 24
-          C 22 24, 17 29, 17 36
-          C 17 43, 22 48, 28 48
-          C 34 48, 39 43, 39 36
-          C 39 29, 34 24, 28 24
-          Z
-          M 39 48
-          C 41 50, 43 54, 43 58
-          L 43 120
-          C 43 124, 40 128, 36 130
-          C 34 131, 32 132, 30 132
-          L 30 134
-          L 46 134
-          L 46 148
-          L 10 148
-          L 10 134
-          L 26 134
-          L 26 132
-          C 24 132, 22 131, 20 130
-          C 16 128, 13 124, 13 120
-          L 13 58
-          C 13 54, 15 50, 17 48
-          C 20 45, 24 44, 28 44
-          C 32 44, 35 45, 39 48
-          Z
+          M 25 12
+          C 36 12, 45 21, 45 32
+          C 45 43, 36 52, 25 52
+          C 14 52, 5 43, 5 32
+          C 5 21, 14 12, 25 12
+          M 25 22
+          C 19.5 22, 15 26.5, 15 32
+          C 15 37.5, 19.5 42, 25 42
+          C 30.5 42, 35 37.5, 35 32
+          C 35 26.5, 30.5 22, 25 22
+          M 35 42
+          L 38 48
+          L 38 120
+          C 38 125, 35 128, 31 130
+          L 31 134
+          L 44 134
+          L 44 148
+          L 6 148
+          L 6 134
+          L 19 134
+          L 19 130
+          C 15 128, 12 125, 12 120
+          L 12 48
+          L 15 42
+          C 18 39, 21 37, 25 37
+          C 29 37, 32 39, 35 42
         " fill="url(#cg9)"/>
         
-        {/* Sheen highlights */}
-        <ellipse cx="22" cy="32" rx="5" ry="7" fill="rgba(255,255,255,.3)"/>
-        <rect x="30" y="60" width="3" height="60" rx="1.5" fill="rgba(255,255,255,.2)"/>
-        <rect x="12" y="136" width="8" height="8" rx="2" fill="rgba(255,255,255,.18)"/>
+        {/* Highlight sheen */}
+        <ellipse cx="20" cy="28" rx="4" ry="6" fill="rgba(255,255,255,.35)"/>
+        <rect x="28" y="55" width="3" height="60" rx="1.5" fill="rgba(255,255,255,.25)"/>
+        <rect x="8" y="136" width="7" height="8" rx="2" fill="rgba(255,255,255,.2)"/>
       </svg>
     </div>
   );
@@ -308,7 +302,7 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
   const c1TopVh = 8 + c1y * 36;
 
   return (
-    <section id="cake" className="min-h-screen flex flex-col items-center justify-start py-8 md:py-12 px-4 relative overflow-hidden"
+    <section id="cake" className="min-h-screen flex flex-col items-center py-4 sm:py-6 md:py-8 px-4 relative overflow-hidden"
       style={{ background:'radial-gradient(ellipse 90% 70% at 50% 100%,#ffe0e8 0%,transparent 55%),radial-gradient(ellipse 80% 50% at 0% 30%,#fde8d8 0%,transparent 50%),#f7ede0' }}>
 
       {/* ── Traveling "1" ── */}

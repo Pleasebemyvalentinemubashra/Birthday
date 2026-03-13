@@ -14,7 +14,7 @@ services:
       - key: AGE
         value: "19"
       - key: SENDER
-        value: Marco
+        value: Anas
       - key: ADMIN_KEY
         value: change-this-to-something-secret
       - key: PORT
