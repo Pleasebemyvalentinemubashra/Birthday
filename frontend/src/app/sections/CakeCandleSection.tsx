@@ -33,97 +33,28 @@ function Flame({ visible, size = 1 }: { visible: boolean; size?: number }) {
   );
 }
 
-/* ─── Candle "1" — serif numeral shape ─────────── */
+/* ─── Image-based Candles ─────────────────────────── */
 function Candle1({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
-    <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
-      {lit && <div style={{ marginBottom:-6 }}><Flame visible size={scale}/></div>}
-      <svg width={46*scale} height={148*scale} viewBox="0 0 46 148" overflow="visible">
-        <defs>
-          <linearGradient id="cg1" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stopColor="#e888b0"/>
-            <stop offset="35%"  stopColor="#fde8f0"/>
-            <stop offset="100%" stopColor="#c8709a"/>
-          </linearGradient>
-        </defs>
-        {/* Wick */}
-        <rect x="22" y="2" width="2" height="9" rx="1" fill="#554433"/>
-        {/* Diagonal flag of the "1" */}
-        <path d="M10,22 L24,14 L24,28 L14,32Z" fill="url(#cg1)"/>
-        {/* Vertical shaft */}
-        <rect x="16" y="14" width="14" height="106" rx="3" fill="url(#cg1)"/>
-        {/* Bottom serif platform */}
-        <rect x="5" y="118" width="36" height="14" rx="3" fill="url(#cg1)"/>
-        {/* Sheen */}
-        <rect x="19" y="18" width="4" height="100" rx="2" fill="rgba(255,255,255,.22)"/>
-        <rect x="8" y="120" width="8" height="8"   rx="2" fill="rgba(255,255,255,.18)"/>
-      </svg>
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', position:'relative' }}>
+      {lit && <div style={{ position:'absolute', top:-10, left:'50%', transform:'translateX(-50%)', zIndex:10 }}><Flame visible size={scale}/></div>}
+      <img src={`${import.meta.env.BASE_URL}candle_1073338.png`} alt="1" style={{ width: 60*scale, height: 'auto', display:'block' }} />
     </div>
   );
 }
 
-/* ─── Candle "9" — TRUE 9-shaped numeral candle ───
-   A real "9" digit with proper curves
-────────────────────────────────────────────────── */
 function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
-    <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
-      {lit && <div style={{ marginBottom:-6 }}><Flame visible size={scale}/></div>}
-      <svg width={50*scale} height={148*scale} viewBox="0 0 50 148" overflow="visible">
-        <defs>
-          <linearGradient id="cg9" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stopColor="#d89030"/>
-            <stop offset="35%"  stopColor="#fff0b8"/>
-            <stop offset="100%" stopColor="#b87020"/>
-          </linearGradient>
-        </defs>
-        {/* Wick */}
-        <rect x="24" y="2" width="2" height="8" rx="1" fill="#554433"/>
-        
-        {/* The "9" - drawn as a proper numeral */}
-        {/* Outer shape of 9 */}
-        <path d="
-          M 25 12
-          C 36 12, 45 21, 45 32
-          C 45 43, 36 52, 25 52
-          C 14 52, 5 43, 5 32
-          C 5 21, 14 12, 25 12
-          M 25 22
-          C 19.5 22, 15 26.5, 15 32
-          C 15 37.5, 19.5 42, 25 42
-          C 30.5 42, 35 37.5, 35 32
-          C 35 26.5, 30.5 22, 25 22
-          M 35 42
-          L 38 48
-          L 38 120
-          C 38 125, 35 128, 31 130
-          L 31 134
-          L 44 134
-          L 44 148
-          L 6 148
-          L 6 134
-          L 19 134
-          L 19 130
-          C 15 128, 12 125, 12 120
-          L 12 48
-          L 15 42
-          C 18 39, 21 37, 25 37
-          C 29 37, 32 39, 35 42
-        " fill="url(#cg9)"/>
-        
-        {/* Highlight sheen */}
-        <ellipse cx="20" cy="28" rx="4" ry="6" fill="rgba(255,255,255,.35)"/>
-        <rect x="28" y="55" width="3" height="60" rx="1.5" fill="rgba(255,255,255,.25)"/>
-        <rect x="8" y="136" width="7" height="8" rx="2" fill="rgba(255,255,255,.2)"/>
-      </svg>
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', position:'relative' }}>
+      {lit && <div style={{ position:'absolute', top:-10, left:'50%', transform:'translateX(-50%)', zIndex:10 }}><Flame visible size={scale}/></div>}
+      <img src={`${import.meta.env.BASE_URL}candle_8128768.png`} alt="9" style={{ width: 60*scale, height: 'auto', display:'block' }} />
     </div>
   );
 }
 
-/* ─── Merged "19" ───────────────────────────────── */
 function Candle19({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
-    <div style={{ display:'flex', alignItems:'flex-end', gap:6*scale }}>
+    <div style={{ display:'flex', alignItems:'flex-end', gap:8*scale, position:'relative' }}>
       <Candle1 lit={lit} scale={scale}/>
       <Candle9 lit={lit} scale={scale}/>
     </div>
@@ -270,8 +201,8 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
 
   useEffect(() => {
     if (phase !== 'merging') return;
-    // After merge animation completes, switch to merged
-    const t = setTimeout(() => advance('merged'), 1700);
+    // After merge animation completes, switch to merged (increased timing for smoother animation)
+    const t = setTimeout(() => advance('merged'), 2400);
     return () => clearTimeout(t);
   }, [phase, advance]);
 
@@ -314,53 +245,73 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
         </div>
       )}
 
-      {/* ── Merge animation - smoother and more lovely ── */}
+      {/* ── Merge animation - smooth, attractive and beautiful ── */}
       <AnimatePresence>
         {phase === 'merging' && (
           <>
-            {/* "1" candle glides from right */}
+            {/* "1" candle glides from right with rotation */}
             <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ right:'min(22%, 80px)', top:'44vh', opacity:1, scale:1 }}
+              initial={{ right:'min(22%, 80px)', top:'44vh', opacity:1, scale:1, rotate:0 }}
               animate={{ 
                 right:'45%', 
-                opacity:[1,1,1,0],
-                scale:[1,1.05,1,0.9]
+                opacity:[1,1,1,0.8,0],
+                scale:[1,1.08,1.05,0.95,0.85],
+                rotate:[0,5,10,15,20]
               }}
-              transition={{ duration:1.2, delay:.2, times:[0,.3,.7,1], ease:[0.34, 1.56, 0.64, 1] }}>
+              transition={{ duration:1.5, delay:.15, times:[0,.25,.5,.75,1], ease:[0.25, 0.46, 0.45, 0.94] }}>
               <div className="scale-[0.4] sm:scale-50 md:scale-75">
                 <Candle1 scale={.75}/>
               </div>
             </motion.div>
             
-            {/* "9" candle glides from left */}
+            {/* "9" candle glides from left with rotation */}
             <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ left:'min(24%, 80px)', top:'44vh', opacity:0, scale:0.8 }}
+              initial={{ left:'min(24%, 80px)', top:'44vh', opacity:0, scale:0.7, rotate:0 }}
               animate={{ 
                 left:'35%', 
-                opacity:[0,1,1,1,0],
-                scale:[0.8,1,1.05,1,0.9]
+                opacity:[0,1,1,1,0.8,0],
+                scale:[0.7,0.95,1.08,1.05,0.95,0.85],
+                rotate:[0,-5,-10,-15,-20,-25]
               }}
-              transition={{ duration:1.3, times:[0,.2,.5,.8,1], ease:[0.34, 1.56, 0.64, 1] }}>
+              transition={{ duration:1.6, times:[0,.15,.35,.55,.75,1], ease:[0.25, 0.46, 0.45, 0.94] }}>
               <div className="scale-[0.4] sm:scale-50 md:scale-75">
                 <Candle9 scale={.75}/>
               </div>
             </motion.div>
             
-            {/* Combined "19" appears with lovely bounce */}
-            <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none', left:'50%', top:'44vh' }}
-              initial={{ opacity:0, scale:.5, x:'-50%', y:'-20%', rotate:-10 }}
+            {/* Sparkle effect during merge */}
+            <motion.div style={{ position:'fixed', zIndex:499, pointerEvents:'none', left:'50%', top:'44vh', transform:'translate(-50%, -50%)' }}
+              initial={{ opacity:0, scale:0 }}
               animate={{ 
-                opacity:1, 
-                scale:1, 
-                y:'0%',
-                rotate:0
+                opacity:[0,0.6,0.8,0.6,0],
+                scale:[0,1.5,2,2.5,3]
+              }}
+              transition={{ duration:1.2, delay:0.8, times:[0,.3,.5,.7,1] }}>
+              <div style={{ 
+                width:120, 
+                height:120, 
+                borderRadius:'50%', 
+                background:'radial-gradient(circle, rgba(255,220,180,0.4) 0%, rgba(248,200,232,0.2) 40%, transparent 70%)',
+                filter:'blur(20px)'
+              }}/>
+            </motion.div>
+            
+            {/* Combined "19" appears with lovely bounce and glow */}
+            <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none', left:'50%', top:'44vh' }}
+              initial={{ opacity:0, scale:.4, x:'-50%', y:'-30%', rotate:-15 }}
+              animate={{ 
+                opacity:[0,0,1,1],
+                scale:[.4,.6,.95,1], 
+                y:['-30%','-10%','5%','0%'],
+                rotate:[-15,-8,3,0]
               }}
               transition={{ 
-                duration:.8, 
-                delay:1.0,
+                duration:1.1, 
+                delay:1.2,
+                times:[0,.3,.7,1],
                 type: "spring",
-                stiffness: 200,
-                damping: 15
+                stiffness: 180,
+                damping: 12
               }}>
               <div className="scale-[0.4] sm:scale-50 md:scale-75">
                 <Candle19 scale={.75}/>
@@ -379,25 +330,35 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
         </div>
       )}
 
-      {/* Section title - moved to top with more space */}
-      <motion.div className="text-center mb-8 sm:mb-12 md:mb-16 mt-4 sm:mt-8"
-        initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
-        <p className="text-[10px] sm:text-xs md:text-sm tracking-[.2em] uppercase mb-1 sm:mb-2" style={{ fontFamily:'var(--font-serif)', color:ROSE }}>Make a Wish</p>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl" style={{ fontFamily:'var(--font-handwritten)', color:ROSE }}>Happy {age}th!</h2>
-      </motion.div>
+      {/* Section title - ABSOLUTE TOP with conditional visibility */}
+      <AnimatePresence>
+        {(phase === 'traveling' || phase === 'merged' || phase === 'landing' || phase === 'landed') && (
+          <motion.div className="text-center mb-0 mt-2 sm:mt-4"
+            initial={{ opacity:0, y:20 }} 
+            animate={{ opacity:1, y:0 }}
+            exit={{ opacity:0, y:-20 }}
+            transition={{ duration:0.5 }}>
+            <p className="text-[9px] sm:text-[10px] md:text-xs tracking-[.2em] uppercase mb-1" style={{ fontFamily:'var(--font-serif)', color:ROSE }}>Make a Wish</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl" style={{ fontFamily:'var(--font-handwritten)', color:ROSE }}>Happy {age}th!</h2>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Cake stage - with more top margin */}
-      <div ref={cakeRef} className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[340px] px-4 mt-12 sm:mt-16 md:mt-20">
+      {/* MASSIVE SPACER TO COMPLETELY PREVENT OVERLAP */}
+      <div className="flex-1 min-h-[280px] sm:min-h-[340px] md:min-h-[400px]" />
+
+      {/* Cake stage - PUSHED WAY DOWN */}
+      <div ref={cakeRef} className="relative w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] px-4">
         <AnimatePresence>
           {(phase === 'landing' || phase === 'landed') && (
             <motion.div style={{ position:'absolute', left:'50%', zIndex:10, display:'flex', justifyContent:'center' }}
-              initial={{ y:-170, x:'-50%' }}
-              animate={{ y:-90, x:'-50%' }}
+              initial={{ y:-180, x:'-50%' }}
+              animate={{ y:-100, x:'-50%' }}
               transition={{ duration:1.1, ease:[.22,1,.36,1] }}>
-              <motion.div className="scale-[0.6] sm:scale-75 md:scale-100"
-                animate={phase==='landed' ? { x:[0,-14,14,-14,14,-14,0] } : {}}
+              <motion.div className="scale-[0.5] sm:scale-[0.6] md:scale-75"
+                animate={phase==='landed' ? { x:[0,-12,12,-12,12,-12,0] } : {}}
                 transition={{ duration:1, delay:.25 }}>
-                <Candle19 lit={phase==='landed'} scale={.82}/>
+                <Candle19 lit={phase==='landed'} scale={.7}/>
               </motion.div>
             </motion.div>
           )}
