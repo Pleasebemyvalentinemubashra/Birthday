@@ -37,8 +37,8 @@ function Flame({ visible, size = 1 }: { visible: boolean; size?: number }) {
 function Candle1({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', position:'relative' }}>
-      {lit && <div style={{ position:'absolute', top:-10, left:'50%', transform:'translateX(-50%)', zIndex:10 }}><Flame visible size={scale}/></div>}
-      <img src={`${import.meta.env.BASE_URL}candle_1073338.png`} alt="1" style={{ width: 60*scale, height: 'auto', display:'block' }} />
+      {lit && <div style={{ position:'absolute', top:-15*scale, left:'50%', transform:'translateX(-50%)', zIndex:10 }}><Flame visible size={scale*1.2}/></div>}
+      <img src={`${import.meta.env.BASE_URL}candle_1073338.png`} alt="1" style={{ width: 90*scale, height: 'auto', display:'block' }} />
     </div>
   );
 }
@@ -46,8 +46,8 @@ function Candle1({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
 function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   return (
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', position:'relative' }}>
-      {lit && <div style={{ position:'absolute', top:-10, left:'50%', transform:'translateX(-50%)', zIndex:10 }}><Flame visible size={scale}/></div>}
-      <img src={`${import.meta.env.BASE_URL}candle_8128768.png`} alt="9" style={{ width: 60*scale, height: 'auto', display:'block' }} />
+      {lit && <div style={{ position:'absolute', top:-15*scale, left:'50%', transform:'translateX(-50%)', zIndex:10 }}><Flame visible size={scale*1.2}/></div>}
+      <img src={`${import.meta.env.BASE_URL}candle_8128768.png`} alt="9" style={{ width: 90*scale, height: 'auto', display:'block' }} />
     </div>
   );
 }
@@ -201,8 +201,8 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
 
   useEffect(() => {
     if (phase !== 'merging') return;
-    // After merge animation completes, switch to merged (increased timing for smoother animation)
-    const t = setTimeout(() => advance('merged'), 2400);
+    // After merge animation completes, switch to merged
+    const t = setTimeout(() => advance('merged'), 1800);
     return () => clearTimeout(t);
   }, [phase, advance]);
 
@@ -238,44 +238,41 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
 
       {/* ── Traveling "1" ── */}
       {phase === 'traveling' && (
-        <div style={{ position:'fixed', right:'min(22%, 80px)', top:`${c1TopVh}vh`, pointerEvents:'none', zIndex:500 }}>
-          <div className="scale-[0.4] sm:scale-50 md:scale-75">
-            <Candle1 scale={.75}/>
+        <div style={{ position:'fixed', right:'min(18%, 70px)', top:`${c1TopVh}vh`, pointerEvents:'none', zIndex:500 }}>
+          <div className="scale-[0.6] sm:scale-75 md:scale-100">
+            <Candle1 scale={1}/>
           </div>
         </div>
       )}
 
-      {/* ── Merge animation - smooth, attractive and beautiful ── */}
+      {/* ── Merge animation - smooth merge on top of cake ── */}
       <AnimatePresence>
         {phase === 'merging' && (
           <>
-            {/* "1" candle glides from right with rotation */}
+            {/* "1" candle glides from right to center above cake */}
             <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ right:'min(22%, 80px)', top:'44vh', opacity:1, scale:1, rotate:0 }}
+              initial={{ right:'min(18%, 70px)', top:'44vh' }}
               animate={{ 
-                right:'45%', 
-                opacity:[1,1,1,0.8,0],
-                scale:[1,1.08,1.05,0.95,0.85],
-                rotate:[0,5,10,15,20]
+                left:'48%',
+                top:'44vh'
               }}
-              transition={{ duration:1.5, delay:.15, times:[0,.25,.5,.75,1], ease:[0.25, 0.46, 0.45, 0.94] }}>
-              <div className="scale-[0.4] sm:scale-50 md:scale-75">
-                <Candle1 scale={.75}/>
+              transition={{ duration:1.2, ease:[0.25, 0.46, 0.45, 0.94] }}>
+              <div className="scale-[0.6] sm:scale-75 md:scale-100">
+                <Candle1 scale={1}/>
               </div>
             </motion.div>
             
-            {/* "9" candle glides from left with rotation */}
+            {/* "9" candle glides from left to center above cake */}
             <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ left:'min(24%, 80px)', top:'44vh', opacity:0, scale:0.7, rotate:0 }}
+              initial={{ left:'min(18%, 70px)', top:'44vh', opacity:0 }}
               animate={{ 
-                left:'35%', 
-                opacity:[0,1,1,1,0.8,0],
-                scale:[0.7,0.95,1.08,1.05,0.95,0.85],
-                rotate:[0,-5,-10,-15,-20,-25]
+                left:'52%',
+                top:'44vh',
+                opacity:1
               }}
-              transition={{ duration:1.6, times:[0,.15,.35,.55,.75,1], ease:[0.25, 0.46, 0.45, 0.94] }}>
-              <div className="scale-[0.4] sm:scale-50 md:scale-75">
-                <Candle9 scale={.75}/>
+              transition={{ duration:1.2, ease:[0.25, 0.46, 0.45, 0.94] }}>
+              <div className="scale-[0.6] sm:scale-75 md:scale-100">
+                <Candle9 scale={1}/>
               </div>
             </motion.div>
             
@@ -286,35 +283,30 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
                 opacity:[0,0.6,0.8,0.6,0],
                 scale:[0,1.5,2,2.5,3]
               }}
-              transition={{ duration:1.2, delay:0.8, times:[0,.3,.5,.7,1] }}>
+              transition={{ duration:1.2, delay:0.6, times:[0,.3,.5,.7,1] }}>
               <div style={{ 
-                width:120, 
-                height:120, 
+                width:150, 
+                height:150, 
                 borderRadius:'50%', 
                 background:'radial-gradient(circle, rgba(255,220,180,0.4) 0%, rgba(248,200,232,0.2) 40%, transparent 70%)',
                 filter:'blur(20px)'
               }}/>
             </motion.div>
             
-            {/* Combined "19" appears with lovely bounce and glow */}
-            <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none', left:'50%', top:'44vh' }}
-              initial={{ opacity:0, scale:.4, x:'-50%', y:'-30%', rotate:-15 }}
+            {/* Combined "19" appears smoothly */}
+            <motion.div style={{ position:'fixed', zIndex:501, pointerEvents:'none', left:'50%', top:'44vh', transform:'translateX(-50%)' }}
+              initial={{ opacity:0, scale:0.8 }}
               animate={{ 
-                opacity:[0,0,1,1],
-                scale:[.4,.6,.95,1], 
-                y:['-30%','-10%','5%','0%'],
-                rotate:[-15,-8,3,0]
+                opacity:1,
+                scale:1
               }}
               transition={{ 
-                duration:1.1, 
+                duration:0.6, 
                 delay:1.2,
-                times:[0,.3,.7,1],
-                type: "spring",
-                stiffness: 180,
-                damping: 12
+                ease:[0.34, 1.56, 0.64, 1]
               }}>
-              <div className="scale-[0.4] sm:scale-50 md:scale-75">
-                <Candle19 scale={.75}/>
+              <div className="scale-[0.6] sm:scale-75 md:scale-100">
+                <Candle19 scale={1}/>
               </div>
             </motion.div>
           </>
@@ -324,8 +316,8 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
       {/* ── Merged traveling ── */}
       {phase === 'merged' && (
         <div style={{ position:'fixed', top:'44vh', left:'50%', transform:'translateX(-50%)', pointerEvents:'none', zIndex:500 }}>
-          <div className="scale-[0.4] sm:scale-50 md:scale-75">
-            <Candle19 scale={.75}/>
+          <div className="scale-[0.6] sm:scale-75 md:scale-100">
+            <Candle19 scale={1}/>
           </div>
         </div>
       )}
@@ -353,12 +345,12 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
           {(phase === 'landing' || phase === 'landed') && (
             <motion.div style={{ position:'absolute', left:'50%', zIndex:10, display:'flex', justifyContent:'center' }}
               initial={{ y:-180, x:'-50%' }}
-              animate={{ y:-100, x:'-50%' }}
+              animate={{ y:-80, x:'-50%' }}
               transition={{ duration:1.1, ease:[.22,1,.36,1] }}>
-              <motion.div className="scale-[0.5] sm:scale-[0.6] md:scale-75"
+              <motion.div className="scale-[0.7] sm:scale-[0.85] md:scale-100"
                 animate={phase==='landed' ? { x:[0,-12,12,-12,12,-12,0] } : {}}
                 transition={{ duration:1, delay:.25 }}>
-                <Candle19 lit={phase==='landed'} scale={.7}/>
+                <Candle19 lit={phase==='landed'} scale={1}/>
               </motion.div>
             </motion.div>
           )}
