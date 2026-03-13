@@ -122,11 +122,11 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
   const [isLit, setIsLit] = useState(false);
 
   return (
-    <section id="cake" className="min-h-screen flex flex-col items-center justify-center py-8 px-4 relative overflow-hidden"
+    <section id="cake" className="min-h-screen flex flex-col items-center py-8 px-4 relative overflow-hidden"
       style={{ background:'radial-gradient(ellipse 90% 70% at 50% 100%,#ffe0e8 0%,transparent 55%),radial-gradient(ellipse 80% 50% at 0% 30%,#fde8d8 0%,transparent 50%),#f7ede0' }}>
 
-      {/* Section title */}
-      <motion.div className="text-center mb-12 sm:mb-16 md:mb-20"
+      {/* Section title at top */}
+      <motion.div className="text-center mt-8 mb-4"
         initial={{ opacity:0, y:20 }} 
         whileInView={{ opacity:1, y:0 }} 
         viewport={{ once:true }}>
@@ -134,12 +134,15 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
         <h2 className="text-3xl sm:text-4xl md:text-5xl" style={{ fontFamily:'var(--font-handwritten)', color:ROSE }}>Happy {age}th!</h2>
       </motion.div>
 
-      {/* Cake with candle */}
-      <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px]">
+      {/* Spacer */}
+      <div className="flex-1" />
+
+      {/* Cake with candle - centered */}
+      <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] mb-8">
         {/* Candle on top - clickable */}
         <motion.div 
           className="absolute left-1/2 -translate-x-1/2 cursor-pointer"
-          style={{ top: '-60px', zIndex: 10 }}
+          style={{ top: '-80px', zIndex: 10 }}
           onClick={() => setIsLit(!isLit)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -209,6 +212,9 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
           </p>
         </motion.div>
       </div>
+
+      {/* Spacer */}
+      <div className="flex-1" />
     </section>
   );
 }
