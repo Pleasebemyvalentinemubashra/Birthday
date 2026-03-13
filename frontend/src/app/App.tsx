@@ -133,7 +133,7 @@ export default function App() {
 
       <LetterSection/>
 
-      <CakeCandleSection age={cfg.age}/>
+      <CakeCandleSection age={cfg.age} recipient={cfg.recipient}/>
 
       <FinalSection recipient={cfg.recipient} sender={cfg.sender}/>
     </div>

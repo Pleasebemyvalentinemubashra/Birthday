@@ -13,6 +13,15 @@ const UPLOADS_DIR  = path.join(__dirname, 'uploads');
 const FRONTEND_DIR = path.join(__dirname, 'frontend', 'dist');
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
+// ── CORS MIDDLEWARE ──────────────────────────────
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, x-admin-key');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
+
 // ── DATABASE ──────────────────────────────────────
 const db = new Database(path.join(__dirname, 'memories.db'));
 db.pragma('journal_mode = WAL');

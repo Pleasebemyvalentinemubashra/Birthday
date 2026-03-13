@@ -239,9 +239,9 @@ function Spark({ x,y,color,angle,dist }: { x:number;y:number;color:string;angle:
 const SPARK_COLORS = ['#f4c2c2','#d4688e','#f9d8bc','#e898b8','#fff0c0','#f8c8e8','#d9c6f7'];
 type Phase = 'traveling'|'merging'|'merged'|'landing'|'landed';
 
-interface CakeCandleSectionProps { age: number }
+interface CakeCandleSectionProps { age: number; recipient?: string }
 
-export function CakeCandleSection({ age }: CakeCandleSectionProps) {
+export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSectionProps) {
   const cakeRef    = useRef<HTMLDivElement>(null);
   const phaseRef   = useRef<Phase>('traveling');
   const rafRef     = useRef<number>();
@@ -368,7 +368,7 @@ export function CakeCandleSection({ age }: CakeCandleSectionProps) {
       )}
 
       {/* Section title */}
-      <motion.div className="text-center mb-6 md:mb-8"
+      <motion.div className="text-center mb-12 md:mb-16"
         initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
         <p className="text-xs md:text-sm tracking-[.2em] uppercase mb-2" style={{ fontFamily:'var(--font-serif)', color:ROSE }}>Make a Wish</p>
         <h2 className="text-4xl md:text-5xl" style={{ fontFamily:'var(--font-handwritten)', color:ROSE }}>Happy {age}th!</h2>
@@ -380,7 +380,7 @@ export function CakeCandleSection({ age }: CakeCandleSectionProps) {
           {(phase === 'landing' || phase === 'landed') && (
             <motion.div style={{ position:'absolute', left:'50%', zIndex:10, display:'flex', justifyContent:'center' }}
               initial={{ y:-170, x:'-50%' }}
-              animate={{ y:-72, x:'-50%' }}
+              animate={{ y:-82, x:'-50%' }}
               transition={{ duration:1.1, ease:[.22,1,.36,1] }}>
               <motion.div className="scale-75 md:scale-100"
                 animate={phase==='landed' ? { x:[0,-14,14,-14,14,-14,0] } : {}}
@@ -406,12 +406,18 @@ export function CakeCandleSection({ age }: CakeCandleSectionProps) {
 
         <AnimatePresence>
           {showMsg && (
-            <motion.p className="text-center mt-4 md:mt-6 text-3xl md:text-5xl px-4"
-              style={{ fontFamily:'var(--font-handwritten)', color:ROSE, textShadow:'0 2px 20px rgba(180,80,100,.3)' }}
+            <motion.div className="text-center mt-6 md:mt-8 px-4"
               initial={{ opacity:0, scale:.8 }} animate={{ opacity:1, scale:1 }}
               transition={{ duration:.8, ease:[.34,1.56,.64,1] }}>
-              Happy Birthday! ♡
-            </motion.p>
+              <p className="text-4xl md:text-5xl mb-2"
+                style={{ fontFamily:'var(--font-handwritten)', color:ROSE, textShadow:'0 2px 20px rgba(180,80,100,.3)' }}>
+                Happy Birthday! ♡
+              </p>
+              <p className="text-3xl md:text-4xl"
+                style={{ fontFamily:'var(--font-handwritten)', color:ROSE, textShadow:'0 2px 20px rgba(180,80,100,.3)' }}>
+                {recipient}
+              </p>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>
