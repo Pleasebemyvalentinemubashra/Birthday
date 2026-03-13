@@ -10,7 +10,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: RECIPIENT
-        value: Sofia
+        value: Mubashira
       - key: AGE
         value: "19"
       - key: SENDER

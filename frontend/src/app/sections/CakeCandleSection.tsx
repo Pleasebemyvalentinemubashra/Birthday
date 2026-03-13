@@ -62,46 +62,12 @@ function Candle1({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
   );
 }
 
-/* ─── Candle "9" — proper loop + descending tail ──
-   The "9" is drawn as:
-     • A thick-walled circular ring (loop top of the digit)
-       using a proper two-arc approach — NO degenerate arc.
-     • A vertical tail extending down-right from the ring.
-   The ring center is at (28, 34). Outer r=22, inner r=13.
-   The tail hangs from the outer circle's bottom-right (≈ x=44).
+/* ─── Candle "9" — proper curved 9 shape ──────────
+   The "9" is drawn as a beautiful curved numeral:
+     • A circular loop at the top (the head of the 9)
+     • A graceful curved tail descending from the loop
 ────────────────────────────────────────────────── */
 function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
-  /* Ring drawn as two proper closed arcs with fill-rule evenodd.
-     Instead of the broken  "a r,r 0 1,0 0.001,0"  trick we use:
-       M cx, cy-r          ← top of circle
-       a r,r 0 1,0  0, 2r  ← bottom semicircle
-       a r,r 0 1,0  0,-2r  ← back to top
-       Z
-     Repeated for inner radius so evenodd cuts the hole out.       */
-  const cx=28, cy=34, or_=22, ir=13;
-  const outerRing = [
-    `M ${cx},${cy-or_}`,
-    `a ${or_},${or_} 0 1,0 0,${2*or_}`,
-    `a ${or_},${or_} 0 1,0 0,${-2*or_}`,
-    `Z`
-  ].join(' ');
-  const innerRing = [
-    `M ${cx},${cy-ir}`,
-    `a ${ir},${ir} 0 1,0 0,${2*ir}`,
-    `a ${ir},${ir} 0 1,0 0,${-2*ir}`,
-    `Z`
-  ].join(' ');
-
-  /* Tail: descends from where the right side of the circle meets
-     the bottom — roughly (cx+or_, cy) → but we align the tail to
-     the right edge of the ring so it looks like a real "9".
-     Tail x range: cx+ir-1 → cx+or_-1  (straddles right edge)     */
-  const tailX = cx + ir - 2;   // 39
-  const tailW = or_ - ir + 2;  // 11
-  const tailTop = cy + or_ - 4; // where ring bottom is, slight overlap
-  const tailBot = 148 - 14;     // leave room for serif base
-  const tailH   = tailBot - tailTop;
-
   return (
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
       {lit && <div style={{ marginBottom:-6 }}><Flame visible size={scale}/></div>}
@@ -113,20 +79,28 @@ function Candle9({ lit, scale=1 }: { lit?:boolean; scale?:number }) {
             <stop offset="100%" stopColor="#b87020"/>
           </linearGradient>
         </defs>
-        {/* Wick — sits above the ring loop */}
-        <rect x="27" y="2" width="2" height={cy-or_-2} rx="1" fill="#554433"/>
-        {/* Ring (donut) — proper two-arc method */}
-        <path fillRule="evenodd" fill="url(#cg9)"
-          d={`${outerRing} ${innerRing}`}/>
-        {/* Tail */}
-        <rect x={tailX} y={tailTop} width={tailW} height={tailH} rx="4" fill="url(#cg9)"/>
-        {/* Bottom serif — mirrors the "1" */}
-        <rect x="5" y={tailBot} width="46" height="14" rx="3" fill="url(#cg9)"/>
-        {/* Sheens */}
-        <path d={`M ${cx-14},${cy-4} a 10,10 0 0,1 8,-12`}
-          stroke="rgba(255,255,255,.28)" strokeWidth="3" fill="none" strokeLinecap="round"/>
-        <rect x={tailX+2} y={tailTop+4} width="3" height={tailH-8} rx="1.5" fill="rgba(255,255,255,.22)"/>
-        <rect x="8" y={tailBot+2} width="8" height="8" rx="2" fill="rgba(255,255,255,.18)"/>
+        {/* Wick — sits above the loop */}
+        <rect x="27" y="2" width="2" height="10" rx="1" fill="#554433"/>
+        
+        {/* Main 9 shape - circular head with curved tail */}
+        <g>
+          {/* Outer circle of the 9's head */}
+          <circle cx="28" cy="34" r="22" fill="url(#cg9)"/>
+          {/* Inner circle to create the donut hole */}
+          <circle cx="28" cy="34" r="13" fill="#f7ede0"/>
+          
+          {/* Curved tail of the 9 */}
+          <path d="M 40 50 Q 45 70, 42 90 Q 40 110, 35 120 L 35 134 Q 35 136, 33 136 L 25 136 Q 23 136, 23 134 L 23 120 Q 18 110, 16 90 Q 14 70, 20 52 Q 24 45, 28 45 Q 32 45, 36 48 Z" 
+                fill="url(#cg9)"/>
+        </g>
+        
+        {/* Bottom serif platform */}
+        <rect x="5" y="134" width="46" height="14" rx="3" fill="url(#cg9)"/>
+        
+        {/* Sheens for 3D effect */}
+        <ellipse cx="22" cy="30" rx="6" ry="8" fill="rgba(255,255,255,.28)" opacity=".8"/>
+        <rect x="30" y="55" width="4" height="70" rx="2" fill="rgba(255,255,255,.22)"/>
+        <rect x="8" y="136" width="8" height="8" rx="2" fill="rgba(255,255,255,.18)"/>
       </svg>
     </div>
   );
@@ -326,30 +300,54 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
         </div>
       )}
 
-      {/* ── Merge animation ── */}
+      {/* ── Merge animation - smoother and more lovely ── */}
       <AnimatePresence>
         {phase === 'merging' && (
           <>
+            {/* "1" candle glides from right */}
             <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ right:'22%', top:'44vh', opacity:1 }}
-              animate={{ right:'40%', opacity:[1,1,0] }}
-              transition={{ duration:.9, delay:.3, times:[0,.7,1] }}>
+              initial={{ right:'22%', top:'44vh', opacity:1, scale:1 }}
+              animate={{ 
+                right:'45%', 
+                opacity:[1,1,1,0],
+                scale:[1,1.05,1,0.9]
+              }}
+              transition={{ duration:1.2, delay:.2, times:[0,.3,.7,1], ease:[0.34, 1.56, 0.64, 1] }}>
               <div className="scale-50 md:scale-75">
                 <Candle1 scale={.75}/>
               </div>
             </motion.div>
+            
+            {/* "9" candle glides from left */}
             <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none' }}
-              initial={{ left:'24%', top:'44vh', opacity:0 }}
-              animate={{ left:'30%', opacity:[0,1,1,0] }}
-              transition={{ duration:1.1, times:[0,.25,.75,1] }}>
+              initial={{ left:'24%', top:'44vh', opacity:0, scale:0.8 }}
+              animate={{ 
+                left:'35%', 
+                opacity:[0,1,1,1,0],
+                scale:[0.8,1,1.05,1,0.9]
+              }}
+              transition={{ duration:1.3, times:[0,.2,.5,.8,1], ease:[0.34, 1.56, 0.64, 1] }}>
               <div className="scale-50 md:scale-75">
                 <Candle9 scale={.75}/>
               </div>
             </motion.div>
+            
+            {/* Combined "19" appears with lovely bounce */}
             <motion.div style={{ position:'fixed', zIndex:500, pointerEvents:'none', left:'50%', top:'44vh' }}
-              initial={{ opacity:0, scale:.75, x:'-50%', y:'-10%' }}
-              animate={{ opacity:1, scale:1, y:'0%' }}
-              transition={{ duration:.55, delay:1.2 }}>
+              initial={{ opacity:0, scale:.5, x:'-50%', y:'-20%', rotate:-10 }}
+              animate={{ 
+                opacity:1, 
+                scale:1, 
+                y:'0%',
+                rotate:0
+              }}
+              transition={{ 
+                duration:.8, 
+                delay:1.0,
+                type: "spring",
+                stiffness: 200,
+                damping: 15
+              }}>
               <div className="scale-50 md:scale-75">
                 <Candle19 scale={.75}/>
               </div>
@@ -367,8 +365,8 @@ export function CakeCandleSection({ age, recipient = 'Mubashira' }: CakeCandleSe
         </div>
       )}
 
-      {/* Section title */}
-      <motion.div className="text-center mb-12 md:mb-16"
+      {/* Section title - moved higher to prevent overlap */}
+      <motion.div className="text-center mb-20 md:mb-24"
         initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
         <p className="text-xs md:text-sm tracking-[.2em] uppercase mb-2" style={{ fontFamily:'var(--font-serif)', color:ROSE }}>Make a Wish</p>
         <h2 className="text-4xl md:text-5xl" style={{ fontFamily:'var(--font-handwritten)', color:ROSE }}>Happy {age}th!</h2>
